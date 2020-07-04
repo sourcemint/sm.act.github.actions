@@ -46,6 +46,8 @@ jobs:
 
       - name: "[sm] Show fs status"
         run: |
+          git config --global user.email "you@email.com"
+          git config --global user.name "Name"
           pwd
           ls -al
           git status
