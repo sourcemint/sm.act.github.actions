@@ -11,6 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: "[sm] Set env"
+        run: |
+          echo ::set-env name=SM_SOURCE_GIT_REMOTE::git@github.com:${GITHUB_REPOSITORY}.git
+          echo ::set-env name=SM_ACT_GIT_SHA::${GITHUB_SHA}
+          echo ::set-env name=SM_ACT_GIT_SHA7::${GITHUB_SHA:0:7}
+
       - name: "[sm] Set branch env"
         if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
         run: |
