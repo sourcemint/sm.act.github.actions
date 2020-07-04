@@ -21,10 +21,13 @@ jobs:
         run: |
           echo ::set-env name=SM_ACT_GIT_TAG::${GITHUB_REF#refs/*/}
 
-      - name: "[sm] Show SM_ACT_* env"
+      - name: "[sm] Show SM_* env"
         run: |
-          echo "SM_ACT_GIT_BRANCH: ${SM_ACT_GIT_BRANCH}"
-          echo "SM_ACT_GIT_TAG: ${SM_ACT_GIT_TAG}"
+          printenv | grep -e ^SM_
+
+      - name: "[sm] Show GITHUB_* env"
+        run: |
+          printenv | grep -e ^GITHUB_
 
       - name: "[sm] Show * env"
         run: |
