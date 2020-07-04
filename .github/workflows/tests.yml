@@ -9,8 +9,9 @@ jobs:
         node-version:
           - 13.x
     steps:
-      - uses: actions/checkout@v1
-
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: "[sm] Set env"
         run: |
           echo ::set-env name=SM_ACT_GIT_REMOTE::git@github.com:${GITHUB_REPOSITORY}.git
