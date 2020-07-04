@@ -1,4 +1,4 @@
-name: Tests
+name: "[sm] Tests"
 on:
   - push
 jobs:
@@ -9,16 +9,19 @@ jobs:
         node-version:
           - 13.x
     steps:
-      - uses: actions/checkout@v2
-      - name: [sm] Set branch env
+      - uses: actions/checkout@v1
+
+      - name: "[sm] Set branch env"
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           echo ::set-env name=SM_ACT_GIT_BRANCH::${GITHUB_REF#refs/*/}
-      - name: [sm] Set tag env
+
+      - name: "[sm] Set tag env"
         if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
         run: |
           echo ::set-env name=SM_ACT_GIT_TAG::${GITHUB_REF#refs/*/}
-      - name: [sm] Show env
+
+      - name: "[sm] Show env"
         run: |
           echo "SM_ACT_GIT_BRANCH: ${SM_ACT_GIT_BRANCH}"
           echo "SM_ACT_GIT_TAG: ${SM_ACT_GIT_TAG}"
