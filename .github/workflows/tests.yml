@@ -43,3 +43,10 @@ jobs:
       - name: "[sm] Show * env"
         run: |
           printenv
+
+      - name: "[sm] Show fs status"
+        run: |
+          pwd
+          ls -al
+          git branch
+          git status
