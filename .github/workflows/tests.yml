@@ -48,5 +48,11 @@ jobs:
         run: |
           pwd
           ls -al
-          git branch
           git status
+          git remote show origin
+
+          touch README.md
+          git add README.md
+          git commit -m "readme"
+          git push origin master
+
