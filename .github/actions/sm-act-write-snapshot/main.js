@@ -2,7 +2,6 @@
 const PATH = require('path');
 const FS = require('fs');
 const CHILD_PROCESS = require('child_process');
-const OCTOKIT = require('@octokit/core.js');
 
 if (!process.env.SM_ACT_SNAPSHOT_ID) {
     throw new Error(`'SM_ACT_SNAPSHOT_ID' not set!`);
