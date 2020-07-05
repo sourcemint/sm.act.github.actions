@@ -29,13 +29,8 @@ console.log(`::set-output name=path::${path}`);
 
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
-
-
 console.log(CHILD_PROCESS.execSync(`git checkout -t origin/sm.act/snapshots || true`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots`).toString());
-
-console.log(CHILD_PROCESS.execSync(`git branch`).toString());
-
-console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots || true`).toString());
-
-console.log(CHILD_PROCESS.execSync(`git status`).toString());
+console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots --rebase || true`).toString());
+console.log(CHILD_PROCESS.execSync(`git add ${path} && git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
+console.log(CHILD_PROCESS.execSync(`git push origin sm.act/snapshots`).toString());
