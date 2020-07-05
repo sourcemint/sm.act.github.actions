@@ -101,5 +101,9 @@ jobs:
           cat manual/.~manual.log | grep -ve '^(INVOCATION_ID|RUNNER_TRACKING_ID|JOURNAL_STREAM|GITHUB_ACTION|GITHUB_JOB|SM_ACT_JOB_NAME|SM_ACT_TRIGGER_EVENT)=' > manual/.~manual-filtered.log
           cat action/.~action.log | grep -ve '^(INVOCATION_ID|RUNNER_TRACKING_ID|JOURNAL_STREAM|GITHUB_ACTION|GITHUB_JOB|SM_ACT_JOB_NAME|SM_ACT_TRIGGER_EVENT)=' > action/.~action-filtered.log
 
+          echo "--"
+          cat manual/.~manual-filtered
+          echo "--"
+
           # The remaining variables should be identical
-          diff manual/.~manual.log action/.~action.log
+          diff manual/.~manual-filtered.log action/.~action-filtered.log
