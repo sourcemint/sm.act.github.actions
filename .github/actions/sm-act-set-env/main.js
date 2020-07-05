@@ -18,6 +18,7 @@ setEnv('SM_ACT_JOB_NAME', getEnv('GITHUB_JOB'));
 
 if (/^refs\/tags\//.test(getEnv('GITHUB_REF'))) {
     setEnv('SM_ACT_GIT_TAG', getEnv('GITHUB_REF').replace(/^refs\/tags\//, ''));
-} else {
-    setEnv('SM_ACT_GIT_BRANCH', getEnv('GITHUB_REF').replace(/^refs\/tags\//, ''));
+} else
+if (/^refs\/heads\//.test(getEnv('GITHUB_REF'))) {
+    setEnv('SM_ACT_GIT_BRANCH', getEnv('GITHUB_REF').replace(/^refs\/heads\//, ''));
 }

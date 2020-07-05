@@ -21,7 +21,7 @@ jobs:
           echo ::set-env name=SM_ACT_JOB_NAME::${GITHUB_JOB}
 
       - name: "[sm] Set branch env"
-        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
+        if: startsWith(github.ref, 'refs/heads/')
         run: |
           echo ::set-env name=SM_ACT_GIT_BRANCH::${GITHUB_REF#refs/*/}
 
@@ -96,4 +96,10 @@ jobs:
         shell: bash
         run: |
           ls -al
+
+          # Remove variables expected to be different
+          cat manual/.~manual.log | grep -ve '^(INVOCATION_ID|RUNNER_TRACKING_ID|JOURNAL_STREAM|GITHUB_ACTION|GITHUB_JOB|SM_ACT_JOB_NAME|SM_ACT_TRIGGER_EVENT)=' > manual/.~manual-filtered.log
+          cat action/.~action.log | grep -ve '^(INVOCATION_ID|RUNNER_TRACKING_ID|JOURNAL_STREAM|GITHUB_ACTION|GITHUB_JOB|SM_ACT_JOB_NAME|SM_ACT_TRIGGER_EVENT)=' > action/.~action-filtered.log
+
+          # The remaining variables should be identical
           diff manual/.~manual.log action/.~action.log
