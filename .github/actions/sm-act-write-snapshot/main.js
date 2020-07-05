@@ -29,6 +29,17 @@ console.log(`::set-output name=path::${path}`);
 
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
+
+let author = process.env.GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
+if (author) {
+    author[1] = author[1] || process.env.ACTOR_URI;
+    author[2] = author[2] || 'unknown';
+} else {
+    author = [null, process.env.ACTOR_URI, 'unknown'];
+}
+
+console.log(CHILD_PROCESS.execSync(`git config --global user.name "${author[1]}"`).toString());
+console.log(CHILD_PROCESS.execSync(`git config --global user.email "${author[2]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -t origin/sm.act/snapshots || true`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots`).toString());
 console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots --rebase || true`).toString());
