@@ -34,7 +34,7 @@ if (/^refs\/heads\//.test(getEnv('GITHUB_REF'))) {
 const time = MOMENT();
 setEnv('SM_ACT_SNAPSHOT_ID', [
     time.format('YY-MM-DD'),
-    getEnv('SM_ACT_REPOSITORY_URI'),
+    getEnv('SM_ACT_REPO_URI'),
     getEnv('SM_ACT_COMPONENT_ID'),
     getEnv('SM_ACT_GIT_SHA7'),
     time.format('DD-HHmm-ss'),
