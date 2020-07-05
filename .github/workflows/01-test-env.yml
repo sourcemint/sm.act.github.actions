@@ -95,4 +95,5 @@ jobs:
       - name: Compare
         shell: bash
         run: |
-          diff .~manual.log .~action.log
+          ls -al
+          diff manual/.~manual.log action/.~action.log
