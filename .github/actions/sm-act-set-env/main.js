@@ -1,8 +1,10 @@
 
 const MOMENT = require('./moment');
+const CHILD_PROCESS = require('child_process');
+const CRYPTO = require('crypto');
 
 function getEnv (name) {
-    return process.env[name] || undefined;
+    return process.env[name] || '';
 }
 function setEnv (name, value) {
     process.env[name] = value;
@@ -10,6 +12,21 @@ function setEnv (name, value) {
 }
 
 
+const MIN_COMMIT_COUNT = 3;
+const STABLE_COMMIT_COUNT = 7;
+const REPO_GUID = [];
+const commits = CHILD_PROCESS.execSync(`git rev-list --topo-order master | tail -n ${STABLE_COMMIT_COUNT}`).toString().replace(/\n$/, '').split('\n');
+const minCommits = commits.slice(0, MIN_COMMIT_COUNT);
+const stableCommits = commits.slice(0, STABLE_COMMIT_COUNT);
+if (minCommits.length === MIN_COMMIT_COUNT) {
+    REPO_GUID.push(MIN_COMMIT_COUNT + '-' + CRYPTO.createHash('sha1').update(minCommits.join(':')).digest('hex').substr(0, 7));
+}
+if (stableCommits.length === STABLE_COMMIT_COUNT) {
+    REPO_GUID.push(STABLE_COMMIT_COUNT + '-' + CRYPTO.createHash('sha1').update(stableCommits.join(':')).digest('hex').substr(0, 3));
+}
+
+
+setEnv('SM_ACT_REPO_GUID', REPO_GUID.join('-'));
 setEnv('SM_ACT_REPO_URI', `github.com/${getEnv('GITHUB_REPOSITORY')}`);
 setEnv('SM_ACT_GIT_REMOTE', `git@github.com:${getEnv('GITHUB_REPOSITORY')}.git`);
 setEnv('SM_ACT_GIT_REF', getEnv('GITHUB_REF'));
@@ -31,9 +48,16 @@ if (/^refs\/heads\//.test(getEnv('GITHUB_REF'))) {
 
 }
 
+const response = CHILD_PROCESS.execSync('git log -1').toString();
+const parts = response.split("\n");
+setEnv('SM_ACT_GIT_COMMIT_AUTHOR', parts[1].replace(/^Author: /, ''));
+setEnv('SM_ACT_GIT_COMMIT_DATE', parts[2].replace(/^Date:   /, ''));
+setEnv('SM_ACT_GIT_COMMIT_MESSAGE', parts[4].replace(/^\s+/, ''));
+
 const time = MOMENT();
 setEnv('SM_ACT_SNAPSHOT_ID', [
     time.format('YY-MM-DD'),
+    getEnv('SM_ACT_REPO_GUID'),
     getEnv('SM_ACT_REPO_URI'),
     getEnv('SM_ACT_COMPONENT_ID'),
     getEnv('SM_ACT_GIT_SHA7'),
