@@ -10,39 +10,9 @@ jobs:
           - 13.x
     steps:
       - uses: actions/checkout@v2
-        # with:
-        #   fetch-depth: 0
 
       - name: "[sm] Set env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-env@master
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
 
-      - uses: actions/checkout@v2
-
-      - name: "[sm] Show SM_* env"
-        run: |
-          printenv | grep -e ^SM_
-
-      - name: "[sm] Show GITHUB_* env"
-        run: |
-          printenv | grep -e ^GITHUB_
-
-      - name: "[sm] Show * env"
-        run: |
-          printenv
-
-      - name: "[sm] Show fs status"
-        run: |
-
-          # git fetch origin
-          # git config --global user.email "you@email.com"
-          # git config --global user.name "Name"
-
-          pwd
-          ls -al
-          git status
-          git remote show origin
-
-          # touch README.md
-          # git add README.md
-          # git commit -m "readme"
-          # git push origin master
+      - name: "[sm] Show env"
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@master

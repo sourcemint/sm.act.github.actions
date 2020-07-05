@@ -6,6 +6,7 @@ function setEnv (name, value) {
     process.stdout.write(`::set-env name=${name}::${value}\n`);
 }
 
+
 setEnv('SM_ACT_GIT_REMOTE', `git@github.com:${getEnv('GITHUB_REPOSITORY')}.git`);
 setEnv('SM_ACT_GIT_REF', getEnv('GITHUB_REF'));
 setEnv('SM_ACT_GIT_SHA', getEnv('GITHUB_SHA'));

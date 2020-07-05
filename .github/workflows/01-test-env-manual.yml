@@ -34,31 +34,22 @@ jobs:
         run: |
           echo ::set-env name=SM_ACT_GIT_TAG::${GITHUB_REF#refs/*/}
 
-      - name: "[sm] Show SM_* env"
-        run: |
-          printenv | grep -e ^SM_
+      - name: "[sm] Show env"
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@master
 
-      - name: "[sm] Show GITHUB_* env"
-        run: |
-          printenv | grep -e ^GITHUB_
+      # - name: "[sm] Show fs status"
+      #   run: |
 
-      - name: "[sm] Show * env"
-        run: |
-          printenv
+      #     # git fetch origin
+      #     # git config --global user.email "you@email.com"
+      #     # git config --global user.name "Name"
 
-      - name: "[sm] Show fs status"
-        run: |
+      #     pwd
+      #     ls -al
+      #     git status
+      #     git remote show origin
 
-          # git fetch origin
-          # git config --global user.email "you@email.com"
-          # git config --global user.name "Name"
-
-          pwd
-          ls -al
-          git status
-          git remote show origin
-
-          # touch README.md
-          # git add README.md
-          # git commit -m "readme"
-          # git push origin master
+      #     # touch README.md
+      #     # git add README.md
+      #     # git commit -m "readme"
+      #     # git push origin master
