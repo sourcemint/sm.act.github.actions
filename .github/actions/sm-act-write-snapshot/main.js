@@ -30,9 +30,12 @@ console.log(`::set-output name=path::${path}`);
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
 
-console.log(CHILD_PROCESS.execSync(`git checkout -t origin/sm.act/snapshots -b sm.act/snapshots`).toString());
 
+console.log(CHILD_PROCESS.execSync(`git checkout -t origin/sm.act/snapshots || true`).toString());
+console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots`).toString());
 
 console.log(CHILD_PROCESS.execSync(`git branch`).toString());
 
+console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots || true`).toString());
 
+console.log(CHILD_PROCESS.execSync(`git status`).toString());
