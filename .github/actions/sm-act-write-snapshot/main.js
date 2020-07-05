@@ -2,6 +2,7 @@
 const PATH = require('path');
 const FS = require('fs');
 const CHILD_PROCESS = require('child_process');
+const OCTOKIT = require('@octokit/core.js');
 
 if (!process.env.SM_ACT_SNAPSHOT_ID) {
     throw new Error(`'SM_ACT_SNAPSHOT_ID' not set!`);
@@ -15,13 +16,38 @@ Object.keys(process.env).forEach(function (name) {
 
 const path = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots', `${process.env.SM_ACT_SNAPSHOT_FSID}.json`);
 
+
+
+
+OCTOKIT.request(`GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts`, {
+    owner: process.env.GITHUB_REPOSITORY.split('/')[0],
+    repo: process.env.GITHUB_REPOSITORY.split('/')[1],
+    run_id: process.env.GITHUB_RUN_ID
+}).then(function (result) {
+
+console.log("artifacts result", result);
+
+
+});
+
+
+
+
 if (!FS.existsSync(PATH.dirname(path))) FS.mkdirSync(PATH.dirname(path), { recursive: true });
 FS.writeFileSync(path, JSON.stringify({
     id: process.env.SM_ACT_SNAPSHOT_ID,
+    id7: process.env.SM_ACT_SNAPSHOT_ID7,
     hid: process.env.SM_ACT_SNAPSHOT_HID,
     fsid: process.env.SM_ACT_SNAPSHOT_FSID,
     meta: meta,
-    env: process.env
+    env: process.env,
+    files: {
+        baseUrl: "",
+        paths: {
+
+
+        }
+    }
     // TODO: Add files.
 }, null, 4), 'utf8');
 
@@ -37,8 +63,6 @@ if (author) {
 } else {
     author = [null, process.env.SM_ACT_ACTOR_URI, 'unknown'];
 }
-
-console.error("author::", author);
 
 console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git config user.email "${author[2]}"`).toString());

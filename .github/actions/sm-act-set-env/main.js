@@ -73,6 +73,7 @@ setEnv('SM_ACT_SNAPSHOT_ID', [
     getEnv('SM_ACT_ACTOR_URI'),
     getEnv('SM_ACT_RUN_ID')
 ].join(':'));
+setEnv('SM_ACT_SNAPSHOT_ID7', hash7(getEnv('SM_ACT_SNAPSHOT_ID')));
 
 // TODO: Optionally use a hashing seed to create these hashes.
 setEnv('SM_ACT_SNAPSHOT_HID', [
