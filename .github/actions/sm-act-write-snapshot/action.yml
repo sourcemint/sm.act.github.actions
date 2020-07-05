@@ -2,5 +2,7 @@ runs:
   using: 'node12'
   main: 'main.js'
 outputs:
-  path:
-    description: 'The path to the snapshot file from the root of the repository'
+  reportPath:
+    description: 'The path to the snapshot report file'
+  latestPath:
+    description: 'The path to a file which holds a relative path to the latest snapshot report file'

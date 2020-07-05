@@ -28,10 +28,10 @@ jobs:
 
       - shell: bash
         run: |
-          cat "${{ steps.snapshot.outputs.path }}"
+          cat "${{ steps.snapshot.outputs.reportPath }}"
 
       - name: Upload snapshot
         uses: actions/upload-artifact@v1
         with:
           name: snapshot.json
-          path: ${{ steps.snapshot.outputs.path }}
+          path: ${{ steps.snapshot.outputs.reportPath }}

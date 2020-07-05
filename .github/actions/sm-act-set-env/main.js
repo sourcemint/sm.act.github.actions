@@ -56,6 +56,16 @@ setEnv('SM_ACT_GIT_COMMIT_DATE', parts[2].replace(/^Date:   /, ''));
 setEnv('SM_ACT_GIT_COMMIT_MESSAGE', parts[4].replace(/^\s+/, ''));
 
 const time = MOMENT();
+
+setEnv('SM_ACT_ID', [
+    // stable >>>
+    getEnv('SM_ACT_REPO_GUID'),         // Uniquely identifies codebase/repository (identifies collection of clones)
+    getEnv('SM_ACT_REPO_URI'),          // Identifies codebase/repository clone maintained by a specific user or users
+    getEnv('SM_ACT_COMPONENT_ID'),      // Identifies component
+    getEnv('SM_ACT_NAME'),              // Identifies component aspect
+    // <<< stable
+].join(':'));
+
 setEnv('SM_ACT_SNAPSHOT_ID', [
     // reproducible >>>
         time.format('YY-MM-DD'),
