@@ -1,0 +1,46 @@
+name: "[sm] 02 - Test env (action)"
+on:
+  - push
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - 13.x
+    steps:
+      - uses: actions/checkout@v2
+        # with:
+        #   fetch-depth: 0
+
+      - name: "[sm] Set env"
+        uses: actions/sm-act-env
+
+      - name: "[sm] Show SM_* env"
+        run: |
+          printenv | grep -e ^SM_
+
+      - name: "[sm] Show GITHUB_* env"
+        run: |
+          printenv | grep -e ^GITHUB_
+
+      - name: "[sm] Show * env"
+        run: |
+          printenv
+
+      - name: "[sm] Show fs status"
+        run: |
+
+          # git fetch origin
+          # git config --global user.email "you@email.com"
+          # git config --global user.name "Name"
+
+          pwd
+          ls -al
+          git status
+          git remote show origin
+
+          # touch README.md
+          # git add README.md
+          # git commit -m "readme"
+          # git push origin master

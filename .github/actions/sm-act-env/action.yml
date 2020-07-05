@@ -1,0 +1,3 @@
+runs:
+  using: 'node13'
+  main: 'main.js'

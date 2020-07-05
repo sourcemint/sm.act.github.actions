@@ -1,4 +1,4 @@
-name: "[sm] Tests"
+name: "[sm] 01 - Test env (manual)"
 on:
   - push
 jobs:
@@ -10,8 +10,9 @@ jobs:
           - 13.x
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+        # with:
+        #   fetch-depth: 0
+
       - name: "[sm] Set env"
         run: |
           echo ::set-env name=SM_ACT_GIT_REMOTE::git@github.com:${GITHUB_REPOSITORY}.git
@@ -48,17 +49,16 @@ jobs:
       - name: "[sm] Show fs status"
         run: |
 
-          git fetch origin
-          git config --global user.email "you@email.com"
-          git config --global user.name "Name"
+          # git fetch origin
+          # git config --global user.email "you@email.com"
+          # git config --global user.name "Name"
 
           pwd
           ls -al
           git status
           git remote show origin
 
-          touch README.md
-          git add README.md
-          git commit -m "readme"
-          git push origin master
-
+          # touch README.md
+          # git add README.md
+          # git commit -m "readme"
+          # git push origin master
