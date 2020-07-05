@@ -37,7 +37,8 @@ if (author) {
 } else {
     author = [null, process.env.ACTOR_URI, 'unknown'];
 }
-console.log("author", author);
+
+console.error("author::", author);
 
 
 console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());
@@ -45,5 +46,5 @@ console.log(CHILD_PROCESS.execSync(`git config user.email "${author[2]}"`).toStr
 console.log(CHILD_PROCESS.execSync(`git checkout -t origin/sm.act/snapshots || true`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots`).toString());
 console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots --rebase || true`).toString());
-console.log(CHILD_PROCESS.execSync(`git add ${path} && git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
+console.log(CHILD_PROCESS.execSync(`git add "${path}" && git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git push origin sm.act/snapshots`).toString());
