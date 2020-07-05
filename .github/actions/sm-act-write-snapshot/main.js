@@ -15,35 +15,17 @@ Object.keys(process.env).forEach(function (name) {
 
 const path = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots', `${process.env.SM_ACT_SNAPSHOT_FSID}.json`);
 
-
-
-
-const curl = `curl -s -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts`;
-
-console.log("curl", curl);
-
-
-let interval = setInterval(function () {
-
-    console.log('RESPONSE:', CHILD_PROCESS.execSync(curl).toString());
-
-}, 1000);
-
-
-setTimeout(function () {
-    clearInterval(interval);
-
-
-
 if (!FS.existsSync(PATH.dirname(path))) FS.mkdirSync(PATH.dirname(path), { recursive: true });
 FS.writeFileSync(path, JSON.stringify({
     id: process.env.SM_ACT_SNAPSHOT_ID,
     id7: process.env.SM_ACT_SNAPSHOT_ID7,
     hid: process.env.SM_ACT_SNAPSHOT_HID,
     fsid: process.env.SM_ACT_SNAPSHOT_FSID,
+    artifacts: {
+        url: `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts`
+    },
     meta: meta,
-    env: process.env,
-    artifacts: `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts`
+    env: process.env
 }, null, 4), 'utf8');
 
 console.log(`::set-output name=path::${path}`);
@@ -66,7 +48,3 @@ console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots || true`).t
 console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots --rebase || true`).toString());
 console.log(CHILD_PROCESS.execSync(`git add "${path}" && git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git push origin sm.act/snapshots`).toString());
-
-
-}, 10 * 1000);
-

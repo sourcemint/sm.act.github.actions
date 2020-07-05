@@ -64,10 +64,10 @@ setEnv('SM_ACT_SNAPSHOT_ID', [
         getEnv('SM_ACT_REPO_GUID'),
         getEnv('SM_ACT_REPO_URI'),
         getEnv('SM_ACT_COMPONENT_ID'),
+        getEnv('SM_ACT_NAME'),
         // <<< stable
         getEnv('SM_ACT_GIT_SHA7'),
         getEnv('SM_ACT_GIT_BRANCH'),
-        getEnv('SM_ACT_NAME'),
         time.format('DD-HHmm-ss'),
     // <<< reproducible
     getEnv('SM_ACT_ACTOR_URI'),
@@ -83,10 +83,10 @@ setEnv('SM_ACT_SNAPSHOT_HID', [
         hash7(getEnv('SM_ACT_REPO_GUID')),
         hash7(getEnv('SM_ACT_REPO_URI')),
         hash7(getEnv('SM_ACT_COMPONENT_ID')),
+        hash7(getEnv('SM_ACT_NAME')),
         // <<< stable
         getEnv('SM_ACT_GIT_SHA7'),
         hash7(getEnv('SM_ACT_GIT_BRANCH')),
-        hash7(getEnv('SM_ACT_NAME')),
         time.format('DD-HHmm-ss'),
     // <<< reproducible
     hash7(getEnv('SM_ACT_ACTOR_URI')),
