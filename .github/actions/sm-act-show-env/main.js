@@ -5,7 +5,7 @@ function heading (str) {
 function envsForPrefix (prefix) {
     Object.keys(process.env).forEach(function (name) {
         if (name.substr(0, prefix.length) !== prefix) return;
-        console.log(`  ${name}=${process.env.name}`);
+        console.log(`  ${name}=${process.env[name]}`);
     });
 }
 
