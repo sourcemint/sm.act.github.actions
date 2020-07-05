@@ -10,7 +10,9 @@ function setEnv (name, value) {
     process.env[name] = value;
     process.stdout.write(`::set-env name=${name}::${value}\n`);
 }
-
+function hash7 (str) {
+    return CRYPTO.createHash('sha1').update(str).digest('hex').substr(0, 7);
+}
 
 const MIN_COMMIT_COUNT = 3;
 const STABLE_COMMIT_COUNT = 7;
@@ -19,10 +21,10 @@ const commits = CHILD_PROCESS.execSync(`git rev-list --topo-order master | tail 
 const minCommits = commits.slice(0, MIN_COMMIT_COUNT);
 const stableCommits = commits.slice(0, STABLE_COMMIT_COUNT);
 if (minCommits.length === MIN_COMMIT_COUNT) {
-    REPO_GUID.push(MIN_COMMIT_COUNT + '-' + CRYPTO.createHash('sha1').update(minCommits.join(':')).digest('hex').substr(0, 7));
+    REPO_GUID.push(MIN_COMMIT_COUNT + '-' + hash7(minCommits.join(':')));
 }
 if (stableCommits.length === STABLE_COMMIT_COUNT) {
-    REPO_GUID.push(STABLE_COMMIT_COUNT + '-' + CRYPTO.createHash('sha1').update(stableCommits.join(':')).digest('hex').substr(0, 3));
+    REPO_GUID.push(STABLE_COMMIT_COUNT + '-' + hash7(stableCommits.join(':')).substr(0, 3));
 }
 
 
@@ -56,14 +58,38 @@ setEnv('SM_ACT_GIT_COMMIT_MESSAGE', parts[4].replace(/^\s+/, ''));
 
 const time = MOMENT();
 setEnv('SM_ACT_SNAPSHOT_ID', [
-    time.format('YY-MM-DD'),
-    getEnv('SM_ACT_REPO_GUID'),
-    getEnv('SM_ACT_REPO_URI'),
-    getEnv('SM_ACT_COMPONENT_ID'),
-    getEnv('SM_ACT_GIT_SHA7'),
-    time.format('DD-HHmm-ss'),
-    getEnv('SM_ACT_GIT_BRANCH'),
-    getEnv('SM_ACT_NAME'),
+    // reproducible >>>
+        time.format('YY-MM-DD'),
+        // stable >>>
+        getEnv('SM_ACT_REPO_GUID'),
+        getEnv('SM_ACT_REPO_URI'),
+        getEnv('SM_ACT_COMPONENT_ID'),
+        // <<< stable
+        getEnv('SM_ACT_GIT_SHA7'),
+        getEnv('SM_ACT_GIT_BRANCH'),
+        getEnv('SM_ACT_NAME'),
+        time.format('DD-HHmm-ss'),
+    // <<< reproducible
     getEnv('SM_ACT_ACTOR_URI'),
     getEnv('SM_ACT_RUN_ID')
 ].join(':'));
+
+// TODO: Optionally use a hashing seed to create these hashes.
+setEnv('SM_ACT_SNAPSHOT_HID', [
+    // reproducible >>>
+        time.format('YY-MM-DD'),
+        // stable >>>
+        hash7(getEnv('SM_ACT_REPO_GUID')),
+        hash7(getEnv('SM_ACT_REPO_URI')),
+        hash7(getEnv('SM_ACT_COMPONENT_ID')),
+        // <<< stable
+        getEnv('SM_ACT_GIT_SHA7'),
+        hash7(getEnv('SM_ACT_GIT_BRANCH')),
+        hash7(getEnv('SM_ACT_NAME')),
+        time.format('DD-HHmm-ss'),
+    // <<< reproducible
+    hash7(getEnv('SM_ACT_ACTOR_URI')),
+    hash7(getEnv('SM_ACT_RUN_ID'))
+].join(':'));
+
+setEnv('SM_ACT_SNAPSHOT_FSID', getEnv('SM_ACT_SNAPSHOT_ID').replace(/\//g, '~').replace(/:/g, '\/'));

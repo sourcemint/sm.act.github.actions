@@ -13,14 +13,15 @@ jobs:
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
 
       - name: "[sm] Write snapshot"
+        id: snapshot
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-write-snapshot@master
 
       - shell: bash
         run: |
-          cat snapshot.json
+          cat ${{ steps.snapshot.outputs.path }}
 
       - name: Upload snapshot
         uses: actions/upload-artifact@v1
         with:
           name: snapshot.json
-          path: snapshot.json
+          path: ${{ steps.snapshot.outputs.path }}
