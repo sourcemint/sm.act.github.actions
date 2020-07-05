@@ -1,5 +1,5 @@
 
-const MOMENT = require('moment');
+const MOMENT = require('./moment');
 
 function getEnv (name) {
     return process.env[name] || undefined;
