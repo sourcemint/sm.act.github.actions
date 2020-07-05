@@ -32,10 +32,10 @@ console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
 let author = process.env.SM_ACT_GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
 if (author) {
-    author[1] = author[1] || process.env.ACTOR_URI;
+    author[1] = author[1] || process.env.SM_ACT_ACTOR_URI;
     author[2] = author[2] || 'unknown';
 } else {
-    author = [null, process.env.ACTOR_URI, 'unknown'];
+    author = [null, process.env.SM_ACT_ACTOR_URI, 'unknown'];
 }
 
 console.error("author::", author);
