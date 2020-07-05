@@ -12,6 +12,16 @@ jobs:
       - name: "[sm] Set env"
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
 
+      - shell: bash
+        run: |
+          echo "Hello World!" > test.txt
+
+      - name: Upload test artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: test.txt
+          path: test.txt
+
       - name: "[sm] Write snapshot"
         id: snapshot
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-write-snapshot@master

@@ -17,7 +17,7 @@ const path = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots', `${proces
 
 
 
-const curl = `curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts`;
+const curl = `curl -s -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts`;
 
 
 console.log(CHILD_PROCESS.execSync(curl).toString());
@@ -59,7 +59,7 @@ if (author) {
 console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git config user.email "${author[2]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -t origin/sm.act/snapshots || true`).toString());
-console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots`).toString());
+console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots || true`).toString());
 console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots --rebase || true`).toString());
 console.log(CHILD_PROCESS.execSync(`git add "${path}" && git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git push origin sm.act/snapshots`).toString());
