@@ -2,7 +2,7 @@ name: "[sm] 02 - Write Snapshot"
 on:
   - push
 jobs:
-  Write:
+  Snapshot:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

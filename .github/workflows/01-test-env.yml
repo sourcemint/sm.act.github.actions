@@ -2,66 +2,13 @@ name: "[sm] 01 - Test env"
 on:
   - push
 jobs:
-  Manual:
+  Env1:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v2
-      #   # with:
-      #   #   fetch-depth: 0
-
-      - name: "[sm] Set env"
-        run: |
-          echo ::set-env name=SM_ACT_GIT_REMOTE::git@github.com:${GITHUB_REPOSITORY}.git
-          echo ::set-env name=SM_ACT_GIT_REF::${GITHUB_REF}
-          echo ::set-env name=SM_ACT_GIT_SHA::${GITHUB_SHA}
-          echo ::set-env name=SM_ACT_GIT_SHA7::${GITHUB_SHA:0:7}
-          echo ::set-env name=SM_ACT_RUN_ID::${GITHUB_RUN_ID}
-          echo ::set-env name=SM_ACT_ACTOR_URI::github.com/${GITHUB_ACTOR}
-          echo ::set-env name=SM_ACT_TRIGGER_EVENT::${GITHUB_EVENT_NAME}
-          echo ::set-env name=SM_ACT_JOB_NAME::${GITHUB_JOB}
-
-      - name: "[sm] Set branch env"
-        if: startsWith(github.ref, 'refs/heads/')
-        run: |
-          echo ::set-env name=SM_ACT_GIT_BRANCH::${GITHUB_REF#refs/*/}
-
-      - name: "[sm] Set tag env"
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          echo ::set-env name=SM_ACT_GIT_TAG::${GITHUB_REF#refs/*/}
-
-      - name: "[sm] Show env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@master
-
-      - shell: bash
-        run: |
-          printenv > .~manual.log
-      - name: Upload result
-        uses: actions/upload-artifact@v1
+      - uses: actions/checkout@v2
         with:
-          name: manual
-          path: .~manual.log
+          fetch-depth: 0
 
-      # - name: "[sm] Show fs status"
-      #   run: |
-
-      #     # git fetch origin
-      #     # git config --global user.email "you@email.com"
-      #     # git config --global user.name "Name"
-
-      #     pwd
-      #     ls -al
-      #     git status
-      #     git remote show origin
-
-      #     # touch README.md
-      #     # git add README.md
-      #     # git commit -m "readme"
-      #     # git push origin master
-
-  Action:
-    runs-on: ubuntu-latest
-    steps:
       - name: "[sm] Set env"
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
 
@@ -70,37 +17,60 @@ jobs:
 
       - shell: bash
         run: |
-          printenv > .~action.log
+          printenv > .~env1.log
       - name: Upload result
         uses: actions/upload-artifact@v1
         with:
-          name: action
-          path: .~action.log
+          name: env1
+          path: .~env1.log
+  Env2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: "[sm] Set env"
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
+
+      - name: "[sm] Show env"
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@master
+
+      - shell: bash
+        run: |
+          printenv > .~env2.log
+      - name: Upload result
+        uses: actions/upload-artifact@v1
+        with:
+          name: env2
+          path: .~env2.log
 
   Verify:
     runs-on: ubuntu-latest
     needs:
-      - Manual
-      - Action
+      - Env1
+      - Env2
     steps:
-      - name: Download manual result
+      - name: Download env1 result
         uses: actions/download-artifact@v1
         with:
-          name: manual
-      - name: Download action result
+          name: env1
+      - name: Download env2 result
         uses: actions/download-artifact@v1
         with:
-          name: action
+          name: env2
 
       - name: Compare
         shell: bash
         run: |
 
           # Remove variables expected to be different
-          cat manual/.~manual.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_JOB_NAME\|SM_ACT_TRIGGER_EVENT\)=' > manual/.~manual-filtered.log
-          cat action/.~action.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_JOB_NAME\|SM_ACT_TRIGGER_EVENT\)=' > action/.~action-filtered.log
+          # cat env1/.~env1.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_JOB_NAME\|SM_ACT_TRIGGER_EVENT\)=' > env1/.~env1-filtered.log
+          # cat env2/.~env2.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_JOB_NAME\|SM_ACT_TRIGGER_EVENT\)=' > env2/.~env2-filtered.log
+          cat env1/.~env1.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_JOB_NAME\|SM_ACT_TRIGGER_EVENT\)=' > env1/.~env1-filtered.log
+          cat env2/.~env2.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_JOB_NAME\|SM_ACT_TRIGGER_EVENT\)=' > env2/.~env2-filtered.log
 
           ls -al *
 
           # The remaining variables should be identical
-          diff manual/.~manual-filtered.log action/.~action-filtered.log
+          diff env1/.~env1-filtered.log env2/.~env2-filtered.log
