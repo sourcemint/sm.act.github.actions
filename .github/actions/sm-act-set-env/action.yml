@@ -1,3 +1,4 @@
 runs:
   using: 'node12'
+  pre: 'install.sh'
   main: 'main.js'
