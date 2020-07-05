@@ -37,9 +37,11 @@ if (author) {
 } else {
     author = [null, process.env.ACTOR_URI, 'unknown'];
 }
+console.log("author", author);
 
-console.log(CHILD_PROCESS.execSync(`git config --global user.name "${author[1]}"`).toString());
-console.log(CHILD_PROCESS.execSync(`git config --global user.email "${author[2]}"`).toString());
+
+console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());
+console.log(CHILD_PROCESS.execSync(`git config user.email "${author[2]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -t origin/sm.act/snapshots || true`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots`).toString());
 console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots --rebase || true`).toString());
