@@ -34,7 +34,7 @@ Object.keys(process.env).forEach(function (name) {
 // The report that identifies the snapshot.
 const reportPath = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots', `${process.env.SM_ACT_SNAPSHOT_FSID}.json`);
 // An easy to poll path to hold a referenace to the latest snapshot.
-const latestPath = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-latest', `${process.env.SM_ACT_ID}`);
+const latestPath = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-latest', `${process.env.SM_ACT_FSID}`);
 
 
 console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());

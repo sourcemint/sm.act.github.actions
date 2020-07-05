@@ -66,6 +66,8 @@ setEnv('SM_ACT_ID', [
     // <<< stable
 ].join(':'));
 
+setEnv('SM_ACT_FSID', getEnv('SM_ACT_ID').replace(/\//g, '~').replace(/:/g, '\/'));
+
 setEnv('SM_ACT_SNAPSHOT_ID', [
     // reproducible >>>
         time.format('YY-MM-DD'),
@@ -105,4 +107,4 @@ setEnv('SM_ACT_SNAPSHOT_HID', [
 setEnv('SM_ACT_SNAPSHOT_FSID', getEnv('SM_ACT_SNAPSHOT_ID').replace(/\//g, '~').replace(/:/g, '\/'));
 
 setEnv('SM_ACT_SNAPSHOT_ASPECT', getEnv('SM_ACT_NAME'));
-setEnv('SM_ACT_SNAPSHOT_ASPECT_OF', getEnv('SM_ACT_ID').substring(0, getEnv('SM_ACT_ID') - (getEnv('SM_ACT_NAME').length + 1)));
+setEnv('SM_ACT_SNAPSHOT_ASPECT_OF', getEnv('SM_ACT_ID').substring(0, getEnv('SM_ACT_ID').length - (getEnv('SM_ACT_NAME').length + 1)));
