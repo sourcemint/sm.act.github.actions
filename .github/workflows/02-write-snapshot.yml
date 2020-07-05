@@ -1,0 +1,22 @@
+name: "[sm] 02 - Write Snapshot"
+on:
+  - push
+jobs:
+  Manual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: "[sm] Set env"
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
+
+      - name: "[sm] Write snapshot"
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-write-snapshot@master
+
+      - name: Upload snapshot
+        uses: actions/upload-artifact@v1
+        with:
+          name: snapshot
+          path: snapshot.json
