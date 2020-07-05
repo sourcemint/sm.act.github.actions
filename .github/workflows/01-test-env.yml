@@ -83,12 +83,14 @@ jobs:
       - Manual
       - Action
     steps:
-      - name: Download results
+      - name: Download manual result
         uses: actions/download-artifact@v1
         with:
-          name:
-            - manual
-            - action
+          name: manual
+      - name: Download action result
+        uses: actions/download-artifact@v1
+        with:
+          name: action
 
       - name: Compare
         shell: bash
