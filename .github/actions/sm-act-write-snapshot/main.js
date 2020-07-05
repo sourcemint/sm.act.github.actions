@@ -18,17 +18,10 @@ const path = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots', `${proces
 
 
 
-
-OCTOKIT.request(`GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts`, {
-    owner: process.env.GITHUB_REPOSITORY.split('/')[0],
-    repo: process.env.GITHUB_REPOSITORY.split('/')[1],
-    run_id: process.env.GITHUB_RUN_ID
-}).then(function (result) {
-
-console.log("artifacts result", result);
+const curl = `curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts`;
 
 
-});
+console.log(CHILD_PROCESS.execSync(curl).toString());
 
 
 
