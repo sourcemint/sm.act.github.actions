@@ -20,7 +20,7 @@ const path = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots', `${proces
 const curl = `curl -s -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts`;
 
 
-console.log(CHILD_PROCESS.execSync(curl).toString());
+console.log('RESPONSE:', CHILD_PROCESS.execSync(curl).toString());
 
 
 
