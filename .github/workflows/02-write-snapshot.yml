@@ -15,6 +15,10 @@ jobs:
       - name: "[sm] Write snapshot"
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-write-snapshot@master
 
+      - shell: bash
+        run: |
+          cat snapshot.json
+
       - name: Upload snapshot
         uses: actions/upload-artifact@v1
         with:
