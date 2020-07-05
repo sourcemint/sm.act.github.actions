@@ -18,7 +18,7 @@ jobs:
 
       - shell: bash
         run: |
-          cat ${{ steps.snapshot.outputs.path }}
+          cat "${{ steps.snapshot.outputs.path }}"
 
       - name: Upload snapshot
         uses: actions/upload-artifact@v1
