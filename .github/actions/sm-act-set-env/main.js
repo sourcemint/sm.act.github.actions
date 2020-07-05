@@ -32,9 +32,9 @@ const time = MOMENT();
 setEnv('SM_ACT_SNAPSHOT_ID', [
     time.format('YYMM'),
     getEnv('SM_ACT_PACKAGE_URI'),
-    getEnv('SM_ACT_RUN_ID'),
     getEnv('SM_ACT_GIT_SHA7'),
-    time.format('DDHHmmss'),
+    getEnv('SM_ACT_RUN_ID'),
+    time.format('DD-HHmm-ss'),
     getEnv('SM_ACT_GIT_BRANCH'),
     getEnv('SM_ACT_ACTOR_URI')
 ].join(':'));
