@@ -37,7 +37,6 @@ const reportPath = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots', `${
 const latestPath = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-latest', `${process.env.SM_ACT_ID}`);
 
 
-
 console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git config user.email "${author[2]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -t origin/sm.act/snapshots || true`).toString());
@@ -45,7 +44,8 @@ console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots || true`).t
 console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots --rebase || true`).toString());
 
 writeFile(reportPath, JSON.stringify({
-    aid: process.env.SM_ACT_ID,
+    aspect: process.env.SM_ACT_SNAPSHOT_ASPECT,
+    aspectOf: process.env.SM_ACT_SNAPSHOT_ASPECT_OF,
     id: process.env.SM_ACT_SNAPSHOT_ID,
     id7: process.env.SM_ACT_SNAPSHOT_ID7,
     hid: process.env.SM_ACT_SNAPSHOT_HID,

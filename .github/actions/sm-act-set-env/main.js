@@ -103,3 +103,6 @@ setEnv('SM_ACT_SNAPSHOT_HID', [
 ].join(':'));
 
 setEnv('SM_ACT_SNAPSHOT_FSID', getEnv('SM_ACT_SNAPSHOT_ID').replace(/\//g, '~').replace(/:/g, '\/'));
+
+setEnv('SM_ACT_SNAPSHOT_ASPECT', getEnv('SM_ACT_NAME'));
+setEnv('SM_ACT_SNAPSHOT_ASPECT_OF', getEnv('SM_ACT_ID').substring(0, (getEnv('SM_ACT_NAME').length + 1) * -1));
