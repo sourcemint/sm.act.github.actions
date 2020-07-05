@@ -60,10 +60,10 @@ setEnv('SM_ACT_SNAPSHOT_ID', [
     // reproducible >>>
         time.format('YY-MM-DD'),
         // stable >>>
-        getEnv('SM_ACT_REPO_GUID'),
-        getEnv('SM_ACT_REPO_URI'),
-        getEnv('SM_ACT_COMPONENT_ID'),
-        getEnv('SM_ACT_NAME'),
+        getEnv('SM_ACT_REPO_GUID'),         // Uniquely identifies codebase/repository (identifies collection of clones)
+        getEnv('SM_ACT_REPO_URI'),          // Identifies codebase/repository clone maintained by a specific user or users
+        getEnv('SM_ACT_COMPONENT_ID'),      // Identifies component
+        getEnv('SM_ACT_NAME'),              // Identifies component aspect
         // <<< stable
         getEnv('SM_ACT_GIT_SHA7'),
         getEnv('SM_ACT_GIT_BRANCH'),
