@@ -16,6 +16,8 @@ jobs:
       - name: "[sm] Set env"
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-env@master
 
+      - uses: actions/checkout@v2
+
       - name: "[sm] Show SM_* env"
         run: |
           printenv | grep -e ^SM_
