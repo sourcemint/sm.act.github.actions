@@ -9,7 +9,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: "[sm] Set env"
+      - name: "[sm.act] Set env"
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
 
       - shell: bash
@@ -22,7 +22,7 @@ jobs:
           name: test.txt
           path: test.txt
 
-      - name: "[sm] Write snapshot"
+      - name: "[sm.act] Write snapshot report"
         id: snapshot
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-write-snapshot@master
 
