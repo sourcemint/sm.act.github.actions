@@ -30,7 +30,7 @@ console.log(`::set-output name=path::${path}`);
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
 
-let author = process.env.GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
+let author = process.env.SM_ACT_GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
 if (author) {
     author[1] = author[1] || process.env.ACTOR_URI;
     author[2] = author[2] || 'unknown';
