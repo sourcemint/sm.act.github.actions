@@ -27,7 +27,6 @@ if (stableCommits.length === STABLE_COMMIT_COUNT) {
     REPO_GUID.push(STABLE_COMMIT_COUNT + '-' + hash7(stableCommits.join(':')).substr(0, 3));
 }
 
-
 setEnv('SM_ACT_REPO_GUID', REPO_GUID.join('-'));
 setEnv('SM_ACT_REPO_URI', `github.com/${getEnv('GITHUB_REPOSITORY')}`);
 setEnv('SM_ACT_GIT_REMOTE', `git@github.com:${getEnv('GITHUB_REPOSITORY')}.git`);
