@@ -35,6 +35,14 @@ Object.keys(process.env).forEach(function (name) {
 const reportPath = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots', `${process.env.SM_ACT_SNAPSHOT_FSID}.json`);
 // An easy to poll path to hold a referenace to the latest snapshot.
 const latestPath = PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-latest', `${process.env.SM_ACT_FSID}`);
+const mappingPaths = [
+    // A mapping to resolve id to fsid.
+    PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-id', `${process.env.SM_ACT_SNAPSHOT_ID}`),
+    // A mapping to resolve hashid to fsid.
+    PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-hid', `${process.env.SM_ACT_SNAPSHOT_HID}`),
+    // A mapping to resolve short id to fsid.
+    PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-id7', `${process.env.SM_ACT_SNAPSHOT_ID7}`)
+];
 
 
 console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());
@@ -61,9 +69,15 @@ writeFile(reportPath, JSON.stringify({
 }, null, 4));
 
 writeFile(latestPath, PATH.relative(PATH.dirname(latestPath), reportPath));
+mappingPaths.forEach(function (path) {
+    writeFile(path, PATH.relative(PATH.dirname(path), reportPath));
+});
 
 console.log(CHILD_PROCESS.execSync(`git add "${reportPath}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git add "${latestPath}"`).toString());
+mappingPaths.forEach(function (path) {
+    console.log(CHILD_PROCESS.execSync(`git add "${path}"`).toString());
+});
 console.log(CHILD_PROCESS.execSync(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git push origin sm.act/snapshots`).toString());
 
