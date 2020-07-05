@@ -3,7 +3,7 @@ function heading (str) {
     console.log(`${str}:`);
 }
 function envsForPrefix (prefix) {
-    Objecy.keys(process.env).forEach(function (name) {
+    Object.keys(process.env).forEach(function (name) {
         if (name.substr(0, prefix.length) !== prefix) return;
         console.log(`  ${name}=${process.env.name}`);
     });
