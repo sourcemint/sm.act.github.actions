@@ -65,8 +65,8 @@ jobs:
         run: |
 
           # Remove variables expected to be different
-          cat env1/.~env1.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_TRIGGER_EVENT\|SM_ACT_SNAPSHOT_ID\|SM_ACT_SNAPSHOT_HID\|SM_ACT_SNAPSHOT_FSID\)=' > env1/.~env1-filtered.log
-          cat env2/.~env2.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_TRIGGER_EVENT\|SM_ACT_SNAPSHOT_ID\|SM_ACT_SNAPSHOT_HID\|SM_ACT_SNAPSHOT_FSID\)=' > env2/.~env2-filtered.log
+          cat env1/.~env1.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_TRIGGER_EVENT\|SM_ACT_NAME\|SM_ACT_SNAPSHOT_ID\|SM_ACT_SNAPSHOT_HID\|SM_ACT_SNAPSHOT_FSID\)=' > env1/.~env1-filtered.log
+          cat env2/.~env2.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB\|SM_ACT_TRIGGER_EVENT\|SM_ACT_NAME\|SM_ACT_SNAPSHOT_ID\|SM_ACT_SNAPSHOT_HID\|SM_ACT_SNAPSHOT_FSID\)=' > env2/.~env2-filtered.log
 
           ls -al *
 
