@@ -97,14 +97,10 @@ jobs:
         run: |
 
           # Remove variables expected to be different
-          cat manual/.~manual.log | grep -ve '^(INVOCATION_ID|RUNNER_TRACKING_ID|JOURNAL_STREAM|GITHUB_ACTION|GITHUB_JOB|SM_ACT_JOB_NAME|SM_ACT_TRIGGER_EVENT)=' > manual/.~manual-filtered.log
-          cat action/.~action.log | grep -ve '^(INVOCATION_ID|RUNNER_TRACKING_ID|JOURNAL_STREAM|GITHUB_ACTION|GITHUB_JOB|SM_ACT_JOB_NAME|SM_ACT_TRIGGER_EVENT)=' > action/.~action-filtered.log
+          cat manual/.~manual.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB|SM_ACT_JOB_NAME\|SM_ACT_TRIGGER_EVENT\)=' > manual/.~manual-filtered.log
+          cat action/.~action.log | grep -ve '^\(INVOCATION_ID\|RUNNER_TRACKING_ID\|JOURNAL_STREAM\|GITHUB_ACTION\|GITHUB_JOB|SM_ACT_JOB_NAME\|SM_ACT_TRIGGER_EVENT\)=' > action/.~action-filtered.log
 
           ls -al *
-
-          echo "--"
-          cat manual/.~manual-filtered.log
-          echo "--"
 
           # The remaining variables should be identical
           diff manual/.~manual-filtered.log action/.~action-filtered.log
