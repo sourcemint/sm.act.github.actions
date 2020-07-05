@@ -1,6 +1,17 @@
 sm.act.github.actions
 =====================
 
+Snapshot Reports
+----------------
+
+Are written to the `sm.act/snapshots` branch and stored at:
+
+  * `._/gi0.Sourcemint.org~sm.act/snapshots/<SM_ACT_SNAPSHOT_FSID>.json` - The actual JSON report shown below.
+  * `._/gi0.Sourcemint.org~sm.act/snapshots-latest/<SM_ACT_FSID>` - A relative path mapping to `<SM_ACT_SNAPSHOT_FSID>.json`.
+  * `._/gi0.Sourcemint.org~sm.act/snapshots-id/<SM_ACT_SNAPSHOT_ID>` - A relative path mapping to `<SM_ACT_SNAPSHOT_FSID>.json`.
+  * `._/gi0.Sourcemint.org~sm.act/snapshots-hid/<SM_ACT_SNAPSHOT_HID>` - A relative path mapping to `<SM_ACT_SNAPSHOT_FSID>.json`.
+  * `._/gi0.Sourcemint.org~sm.act/snapshots-id7/<SM_ACT_SNAPSHOT_ID7>` - A relative path mapping to `<SM_ACT_SNAPSHOT_FSID>.json`.
+
     {
         "aspect": "Snapshot",
         "aspectOf": "3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/",
@@ -43,3 +54,14 @@ sm.act.github.actions
             ...
         }
     }
+
+Tests
+=====
+
+  * ![[sm] 01 - Test env](https://github.com/sourcemint/sm.act.github.actions/workflows/%5Bsm%5D%2001%20-%20Test%20env/badge.svg)
+  * ![[sm] 02 - Write Snapshot](https://github.com/sourcemint/sm.act.github.actions/workflows/%5Bsm%5D%2002%20-%20Write%20Snapshot/badge.svg)
+
+License
+=======
+
+Copyright &copy; 2020 Christoph Dorn licensed under the MIT License.
