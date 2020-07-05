@@ -1,6 +1,8 @@
 sm.act.github.actions
 =====================
 
+Generate **Sourcemint** `snapshot.json` reports for **Github Workflow Jobs**.
+
 Workflow Configuration
 ----------------------
 
@@ -17,7 +19,6 @@ jobs:
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
 
       - name: "[sm.act] Write snapshot report"
-        id: snapshot
         uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-write-snapshot@master
 ```
 
@@ -86,4 +87,4 @@ Tests
 License
 =======
 
-Copyright &copy; 2020 Christoph Dorn licensed under the MIT License.
+Copyright &copy; 2020 Christoph Dorn. Licensed under the MIT License.
