@@ -37,7 +37,7 @@ setEnv('SM_ACT_RUN_ID', `github-actions-${getEnv('GITHUB_RUN_ID')}`);
 setEnv('SM_ACT_NAME', getEnv('GITHUB_JOB'));
 
 setEnv('SM_ACT_ACTOR_URI', `github.com/${getEnv('GITHUB_ACTOR')}`);
-setEnv('SM_ACT_TRIGGER_EVENT', getEnv('GITHUB_JOB'));
+setEnv('SM_ACT_TRIGGER_EVENT', getEnv('GITHUB_EVENT_NAME'));
 
 setEnv('SM_ACT_COMPONENT_ID', `/`);     // '/' denotes repository-wide component (otherwise a path to root of component)
 
@@ -98,7 +98,7 @@ setEnv('SM_ACT_SNAPSHOT_HID', [
         // <<< stable
         getEnv('SM_ACT_GIT_SHA7'),
         hash7(getEnv('SM_ACT_GIT_BRANCH')),
-        time.format('DD-HHmm-ss'),
+        time.format('HHmm-ss'),
     // <<< reproducible
     hash7(getEnv('SM_ACT_ACTOR_URI')),
     hash7(getEnv('SM_ACT_RUN_ID'))
