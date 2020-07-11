@@ -45,57 +45,65 @@ const mappingPaths = [
     PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-id7', `${process.env.SM_ACT_SNAPSHOT_ID7}`)
 ];
 
-
 console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git config user.email "${author[2]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -t origin/${branchName} || true`).toString());
 console.log(CHILD_PROCESS.execSync(`git checkout -b ${branchName} || true`).toString());
-console.log(CHILD_PROCESS.execSync(`git pull origin ${branchName} --rebase || true`).toString());
 
-writeFile(reportPath, JSON.stringify({
-    aspect: process.env.SM_ACT_SNAPSHOT_ASPECT,
-    aspectOf: process.env.SM_ACT_SNAPSHOT_ASPECT_OF,
-    id: process.env.SM_ACT_SNAPSHOT_ID,
-    id7: process.env.SM_ACT_SNAPSHOT_ID7,
-    hid: process.env.SM_ACT_SNAPSHOT_HID,
-    fsid: process.env.SM_ACT_SNAPSHOT_FSID,
-    logs: {     // The logs that lead to the generation of the snapshot.
-        url: `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/logs`
-    },
-    artifacts: {    // The content of the snapshot
-        url: `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts`
-    },
-    meta: meta,
-    env: process.env
-}, null, 4));
+let retryCount = 0;
+function write () {
 
-writeFile(latestPath, PATH.relative(PATH.dirname(latestPath), reportPath));
-mappingPaths.forEach(function (path) {
-    writeFile(path, PATH.relative(PATH.dirname(path), reportPath));
-});
+    console.log(CHILD_PROCESS.execSync(`(git reset --hard || true) && (git pull origin ${branchName} --rebase || true)`).toString());
 
-console.log(CHILD_PROCESS.execSync(`git add "${reportPath}"`).toString());
-console.log(CHILD_PROCESS.execSync(`git add "${latestPath}"`).toString());
-mappingPaths.forEach(function (path) {
-    console.log(CHILD_PROCESS.execSync(`git add "${path}"`).toString());
-});
-console.log(CHILD_PROCESS.execSync(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
+    writeFile(reportPath, JSON.stringify({
+        aspect: process.env.SM_ACT_SNAPSHOT_ASPECT,
+        aspectOf: process.env.SM_ACT_SNAPSHOT_ASPECT_OF,
+        id: process.env.SM_ACT_SNAPSHOT_ID,
+        id7: process.env.SM_ACT_SNAPSHOT_ID7,
+        hid: process.env.SM_ACT_SNAPSHOT_HID,
+        fsid: process.env.SM_ACT_SNAPSHOT_FSID,
+        logs: {     // The logs that lead to the generation of the snapshot.
+            url: `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/logs`
+        },
+        artifacts: {    // The content of the snapshot
+            url: `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts`
+        },
+        meta: meta,
+        env: process.env
+    }, null, 4));
 
-try {
-    console.log(CHILD_PROCESS.execSync(`git push origin ${branchName}`).toString());
-} catch (err) {
-    console.error("ERROR:", err, ':::', err.stderr.toString(), ':::');
+    writeFile(latestPath, PATH.relative(PATH.dirname(latestPath), reportPath));
+    mappingPaths.forEach(function (path) {
+        writeFile(path, PATH.relative(PATH.dirname(path), reportPath));
+    });
 
-    if (/failed to push some refs to/.test(err.message)) {
-        console.error("REJECTED. RETRY. 1.");
+    console.log(CHILD_PROCESS.execSync(`git add "${reportPath}"`).toString());
+    console.log(CHILD_PROCESS.execSync(`git add "${latestPath}"`).toString());
+    mappingPaths.forEach(function (path) {
+        console.log(CHILD_PROCESS.execSync(`git add "${path}"`).toString());
+    });
+    console.log(CHILD_PROCESS.execSync(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
+
+    try {
+        console.log(CHILD_PROCESS.execSync(`git push origin ${branchName}`).toString());
+    } catch (err) {
+        if (/failed to push some refs to/.test(err.stderr.toString())) {
+
+            retryCount += 1;
+            if (retryCount <= 3) {
+
+                console.error(`Error pushing changes. Re-trying (${retryCount}/3).`);
+                write();
+                return;
+            }
+            console.error(`Error pushing changes. Not re-trying again.`);
+        }
+        throw err;
     }
-
-    if (/failed to push some refs to/.test(err.stderr.toString())) {
-        console.error("REJECTED. RETRY. 2.");
-    }
-
-    throw err;
 }
+
+write();
+
 
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
