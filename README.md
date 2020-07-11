@@ -11,6 +11,9 @@ Job `step` configuration:
 ```
 - name: "[sm.act] Set env"
   uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
+
+- name: "[sm.act] Show env"
+  uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@master
 ```
 
 Sets the following environment variables:
@@ -51,7 +54,7 @@ Job `step` configuration:
   uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-write-snapshot@master
 ```
 
-Are written to a `_/gi0.Sourcemint.org-sm.act/snapshots` branch and stored at:
+Reports are written to a `_/gi0.Sourcemint.org-sm.act/snapshots` branch and stored at:
 
  * `._/gi0.Sourcemint.org~sm.act/snapshots/<SM_ACT_SNAPSHOT_FSID>.json`
    * The actual JSON report shown below.
