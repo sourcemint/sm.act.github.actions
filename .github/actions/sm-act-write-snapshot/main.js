@@ -85,6 +85,15 @@ try {
     console.log(CHILD_PROCESS.execSync(`git push origin ${branchName}`).toString());
 } catch (err) {
     console.error("ERROR:", err, ':::', err.stderr.toString(), ':::');
+
+    if (/failed to push some refs to/.test(err.message)) {
+        console.error("REJECTED. RETRY. 1.");
+    }
+
+    if (/failed to push some refs to/.test(err.stderr.toString())) {
+        console.error("REJECTED. RETRY. 2.");
+    }
+
     throw err;
 }
 
