@@ -90,5 +90,6 @@ try {
 
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
+
 console.log(`::set-output name=reportPath::${reportPath}`);
 console.log(`::set-output name=latestPath::${latestPath}`);
