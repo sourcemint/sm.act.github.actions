@@ -80,7 +80,13 @@ mappingPaths.forEach(function (path) {
     console.log(CHILD_PROCESS.execSync(`git add "${path}"`).toString());
 });
 console.log(CHILD_PROCESS.execSync(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
-console.log(CHILD_PROCESS.execSync(`git push origin ${branchName}`).toString());
+
+try {
+    console.log(CHILD_PROCESS.execSync(`git push origin ${branchName}`).toString());
+} catch (err) {
+    console.error("ERROR:", err);
+    throw err;
+}
 
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 

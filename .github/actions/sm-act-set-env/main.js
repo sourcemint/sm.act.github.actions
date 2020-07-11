@@ -78,7 +78,7 @@ setEnv('SM_ACT_SNAPSHOT_ID', [
         getEnv('SM_ACT_NAME'),              // Identifies component aspect
         // <<< stable
         getEnv('SM_ACT_GIT_SHA7'),
-        getEnv('SM_ACT_GIT_BRANCH'),
+        getEnv('SM_ACT_GIT_TAG') || getEnv('SM_ACT_GIT_BRANCH'),
         time.format('HHmm-ss'),
     // <<< reproducible
     getEnv('SM_ACT_ACTOR_URI'),
@@ -97,7 +97,7 @@ setEnv('SM_ACT_SNAPSHOT_HID', [
         hash7(getEnv('SM_ACT_NAME')),
         // <<< stable
         getEnv('SM_ACT_GIT_SHA7'),
-        hash7(getEnv('SM_ACT_GIT_BRANCH')),
+        hash7(getEnv('SM_ACT_GIT_TAG') || getEnv('SM_ACT_GIT_BRANCH')),
         time.format('HHmm-ss'),
     // <<< reproducible
     hash7(getEnv('SM_ACT_ACTOR_URI')),
