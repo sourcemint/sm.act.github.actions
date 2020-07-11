@@ -84,7 +84,7 @@ console.log(CHILD_PROCESS.execSync(`git commit -m "[gi0.Sourcemint.org/sm.act.gi
 try {
     console.log(CHILD_PROCESS.execSync(`git push origin ${branchName}`).toString());
 } catch (err) {
-    console.error("ERROR:", err);
+    console.error("ERROR:", err, ':::', err.stderr.toString(), ':::');
     throw err;
 }
 
