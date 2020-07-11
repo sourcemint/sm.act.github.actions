@@ -79,7 +79,7 @@ setEnv('SM_ACT_SNAPSHOT_ID', [
         // <<< stable
         getEnv('SM_ACT_GIT_SHA7'),
         getEnv('SM_ACT_GIT_BRANCH'),
-        time.format('DD-HHmm-ss'),
+        time.format('HHmm-ss'),
     // <<< reproducible
     getEnv('SM_ACT_ACTOR_URI'),
     getEnv('SM_ACT_RUN_ID')
