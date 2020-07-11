@@ -12,7 +12,7 @@ function writeFile (path, content) {
     FS.writeFileSync(path, content, 'utf8');
 }
 
-const branchName = '_/gi0.Sourcemint.org~sm.act/snapshots';
+const branchName = '_/gi0.Sourcemint.org-sm.act/snapshots';
 
 let author = process.env.SM_ACT_GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
 if (author) {
