@@ -12,6 +12,7 @@ function writeFile (path, content) {
     FS.writeFileSync(path, content, 'utf8');
 }
 
+const branchName = '_/gi0.Sourcemint.org~sm.act/snapshots';
 
 let author = process.env.SM_ACT_GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
 if (author) {
@@ -47,9 +48,9 @@ const mappingPaths = [
 
 console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());
 console.log(CHILD_PROCESS.execSync(`git config user.email "${author[2]}"`).toString());
-console.log(CHILD_PROCESS.execSync(`git checkout -t origin/sm.act/snapshots || true`).toString());
-console.log(CHILD_PROCESS.execSync(`git checkout -b sm.act/snapshots || true`).toString());
-console.log(CHILD_PROCESS.execSync(`git pull origin sm.act/snapshots --rebase || true`).toString());
+console.log(CHILD_PROCESS.execSync(`git checkout -t origin/${branchName} || true`).toString());
+console.log(CHILD_PROCESS.execSync(`git checkout -b ${branchName} || true`).toString());
+console.log(CHILD_PROCESS.execSync(`git pull origin ${branchName} --rebase || true`).toString());
 
 writeFile(reportPath, JSON.stringify({
     aspect: process.env.SM_ACT_SNAPSHOT_ASPECT,
@@ -79,7 +80,7 @@ mappingPaths.forEach(function (path) {
     console.log(CHILD_PROCESS.execSync(`git add "${path}"`).toString());
 });
 console.log(CHILD_PROCESS.execSync(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
-console.log(CHILD_PROCESS.execSync(`git push origin sm.act/snapshots`).toString());
+console.log(CHILD_PROCESS.execSync(`git push origin ${branchName}`).toString());
 
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
