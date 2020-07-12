@@ -58,7 +58,11 @@ runCommand(`git config user.email "${author[2]}"`);
 
 const sourceBranchName = runCommand(`git rev-parse --abbrev-ref HEAD`).toString().replace(/\n$/, '');
 
-console.log(`Source branch name:`, sourceBranchName);
+console.log(`[sm.act] Source branch name:`, sourceBranchName);
+
+
+runCommand(`git reset --hard`);
+
 
 runCommand(`git checkout -t origin/${branchName} || true`);
 runCommand(`git checkout -b ${branchName} || true`);
