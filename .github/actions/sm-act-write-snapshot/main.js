@@ -55,6 +55,7 @@ const mappingPaths = [
 
 runCommand(`git config user.name "${author[1]}"`);
 runCommand(`git config user.email "${author[2]}"`);
+runCommand(`git config pull.rebase false`);
 
 const sourceBranchName = runCommand(`git rev-parse --abbrev-ref HEAD`).toString().replace(/\n$/, '');
 
@@ -70,7 +71,9 @@ runCommand(`git checkout -b ${branchName} || true`);
 // @source https://stackoverflow.com/a/3364506
 runCommand(`git merge -X theirs ${sourceBranchName} || true`);
 
-runCommand(`git pull origin ${branchName} || true`);
+runCommand(`git fetch origin/${branchName} || true`);
+
+runCommand(`git merge -X theirs origin/${branchName} || true`);
 
 runCommand(`git status`);
 
@@ -120,7 +123,7 @@ function push () {
             retryCount += 1;
             if (retryCount <= maxRetries) {
 
-                runCommand(`git pull origin ${branchName} --rebase || true`);
+                runCommand(`git pull origin ${branchName} || true`);
 
                 console.error(`Error pushing changes. Re-trying (${retryCount}/${maxRetries}).`);
 
