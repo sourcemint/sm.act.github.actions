@@ -55,7 +55,7 @@ const mappingPaths = [
 runCommand(`git config user.name "${author[1]}"`);
 runCommand(`git config user.email "${author[2]}"`);
 
-const sourceBranchName = runCommand(`git rev-parse --abbrev-ref HEAD`).toString();
+const sourceBranchName = runCommand(`git rev-parse --abbrev-ref HEAD`).toString().replace(/\n$/, '');
 
 console.log(`Source branch name:`, sourceBranchName);
 
