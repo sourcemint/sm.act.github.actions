@@ -69,17 +69,19 @@ runCommand(`git reset --hard`);
 try {
     runCommand(`git checkout -t origin/${branchName}`);
 } catch (err) {
+    // Branch does not exist so we create it.
     runCommand(`git checkout --orphan ${branchName}`);
     runCommand(`git rm -rf .`);
 
-    try {
-        runCommand(`git push origin ${branchName}`);
-    } catch (err) {
-        // Another process beat us to it so we use what already exists.
-        runCommand(`git checkout ${sourceBranchName}`);
-        runCommand(`git branch -D ${branchName}`);
-        runCommand(`git checkout -t origin/${branchName}`);
-    }
+    // try {
+        runCommand(`git push origin ${branchName} --force`);
+    // } catch (err) {
+    //     // Another process beat us to it so we use what already exists.
+    //     runCommand(`git checkout ${sourceBranchName}`);
+    //     runCommand(`git branch -D ${branchName}`);
+    //     runCommand(`git fetch origin/${branchName}`);
+    //     runCommand(`git checkout -t origin/${branchName}`);
+    // }
 }
 
 // // @source https://stackoverflow.com/a/3364506
