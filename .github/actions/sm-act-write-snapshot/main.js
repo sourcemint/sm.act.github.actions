@@ -71,14 +71,14 @@ try {
 } catch (err) {
     runCommand(`git checkout --orphan ${branchName}`);
     runCommand(`git rm -rf .`);
+
     try {
-        try {
-            runCommand(`git push origin ${branchName}`);
-        } catch (err) {
-            runCommand(`git checkout ${sourceBranchName}`);
-            runCommand(`git branch -D ${branchName}`);
-            runCommand(`git checkout -t origin/${branchName}`);
-        }
+        runCommand(`git push origin ${branchName}`);
+    } catch (err) {
+        // Another process beat us to it so we use what already exists.
+        runCommand(`git checkout ${sourceBranchName}`);
+        runCommand(`git branch -D ${branchName}`);
+        runCommand(`git checkout -t origin/${branchName}`);
     }
 }
 
