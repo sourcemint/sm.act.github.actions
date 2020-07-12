@@ -8,6 +8,7 @@ if (!process.env.SM_ACT_SNAPSHOT_ID) {
 }
 
 function writeFile (path, content) {
+    console.log('[sm.act] Writing file to:', path);
     if (!FS.existsSync(PATH.dirname(path))) FS.mkdirSync(PATH.dirname(path), { recursive: true });
     FS.writeFileSync(path, content, 'utf8');
 }
@@ -15,7 +16,7 @@ function writeFile (path, content) {
 function runCommand (command) {
     console.log('[sm.act] Running:', command);
     const result = CHILD_PROCESS.execSync(command);
-    console.log(result);
+    console.log(result.toString());
     return result;
 }
 
@@ -67,6 +68,8 @@ runCommand(`git merge -X theirs ${sourceBranchName} || true`);
 
 runCommand(`git pull origin ${branchName} --rebase || true`);
 
+runCommand(`git status`);
+
 writeFile(reportPath, JSON.stringify({
     aspect: process.env.SM_ACT_SNAPSHOT_ASPECT,
     aspectOf: process.env.SM_ACT_SNAPSHOT_ASPECT_OF,
@@ -94,8 +97,12 @@ runCommand(`git add "${latestPath}"`);
 mappingPaths.forEach(function (path) {
     runCommand(`git add "${path}"`);
 });
+
+runCommand(`git status`);
+
 runCommand(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`);
 
+runCommand(`git status`);
 
 let retryCount = 0;
 let maxRetries = 5;
