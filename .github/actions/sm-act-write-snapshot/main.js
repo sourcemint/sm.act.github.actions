@@ -64,8 +64,8 @@ console.log(`[sm.act] Source branch name:`, sourceBranchName);
 
 runCommand(`git reset --hard`);
 
-
 runCommand(`git checkout -t origin/${branchName} || true`);
+
 runCommand(`git checkout -b ${branchName} || true`);
 
 // @source https://stackoverflow.com/a/3364506
@@ -73,7 +73,14 @@ runCommand(`git merge -X theirs ${sourceBranchName} || true`);
 
 runCommand(`git fetch origin ${branchName} || true`);
 
-runCommand(`git merge -X theirs origin/${branchName} || true`);
+try {
+    runCommand(`git merge -X theirs origin/${branchName}`);
+} catch (err) {
+    if (/refusing to merge unrelated histories/.test(err.message)) {
+        console.error(`\n\n\n[sm.act] ERROR: It appears we are not dealing with a complete git history. Make sure 'actions/checkout@v2' is configured with 'fetch-depth: 0'.\n\n\n`);
+        throw err;
+    }
+}
 
 runCommand(`git status`);
 
