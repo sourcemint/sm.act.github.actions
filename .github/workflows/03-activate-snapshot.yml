@@ -1,0 +1,20 @@
+name: "[sm] 03 - Activate Snapshot"
+on:
+  tags:
+    - _/gi0.Sourcemint.org-sm.act/snapshots/*
+jobs:
+  Snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: "[sm.act] Set env"
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@master
+
+      - name: "[sm.act] Show env"
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@master
+
+      - name: "[sm.act] Activate snapshot"
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-activate-snapshot@master
