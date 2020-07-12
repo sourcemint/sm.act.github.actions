@@ -71,7 +71,7 @@ runCommand(`git checkout -b ${branchName} || true`);
 // @source https://stackoverflow.com/a/3364506
 runCommand(`git merge -X theirs ${sourceBranchName} || true`);
 
-runCommand(`git fetch origin/${branchName} || true`);
+runCommand(`git fetch origin ${branchName} || true`);
 
 runCommand(`git merge -X theirs origin/${branchName} || true`);
 
