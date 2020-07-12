@@ -12,6 +12,13 @@ function writeFile (path, content) {
     FS.writeFileSync(path, content, 'utf8');
 }
 
+function runCommand (command) {
+    console.log('[sm.act] Running:', command);
+    const result = CHILD_PROCESS.execSync(command);
+    console.log(result);
+    return result;
+}
+
 const branchName = '_/gi0.Sourcemint.org-sm.act/snapshots';
 
 let author = process.env.SM_ACT_GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
@@ -45,19 +52,19 @@ const mappingPaths = [
     PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-id7', `${process.env.SM_ACT_SNAPSHOT_ID7}`)
 ];
 
-console.log(CHILD_PROCESS.execSync(`git config user.name "${author[1]}"`).toString());
-console.log(CHILD_PROCESS.execSync(`git config user.email "${author[2]}"`).toString());
+runCommand(`git config user.name "${author[1]}"`);
+runCommand(`git config user.email "${author[2]}"`);
 
-const sourceBranchName = CHILD_PROCESS.execSync(`git rev-parse --abbrev-ref HEAD`).toString();
+const sourceBranchName = runCommand(`git rev-parse --abbrev-ref HEAD`).toString();
 
 console.log(`Source branch name:`, sourceBranchName);
 
-console.log(CHILD_PROCESS.execSync(`git checkout -t origin/${branchName} || true`).toString());
-console.log(CHILD_PROCESS.execSync(`git checkout -b ${branchName} || true`).toString());
+runCommand(`git checkout -t origin/${branchName} || true`);
+runCommand(`git checkout -b ${branchName} || true`);
 
-console.log(CHILD_PROCESS.execSync(`git merge ${sourceBranchName} --rebase || true`).toString());
+runCommand(`git merge ${sourceBranchName} || true`);
 
-console.log(CHILD_PROCESS.execSync(`git pull origin ${branchName} --rebase || true`).toString());
+runCommand(`git pull origin ${branchName} --rebase || true`);
 
 writeFile(reportPath, JSON.stringify({
     aspect: process.env.SM_ACT_SNAPSHOT_ASPECT,
@@ -81,12 +88,12 @@ mappingPaths.forEach(function (path) {
     writeFile(path, PATH.relative(PATH.dirname(path), reportPath));
 });
 
-console.log(CHILD_PROCESS.execSync(`git add "${reportPath}"`).toString());
-console.log(CHILD_PROCESS.execSync(`git add "${latestPath}"`).toString());
+runCommand(`git add "${reportPath}"`);
+runCommand(`git add "${latestPath}"`);
 mappingPaths.forEach(function (path) {
-    console.log(CHILD_PROCESS.execSync(`git add "${path}"`).toString());
+    runCommand(`git add "${path}"`);
 });
-console.log(CHILD_PROCESS.execSync(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`).toString());
+runCommand(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`);
 
 
 let retryCount = 0;
@@ -94,14 +101,14 @@ let maxRetries = 5;
 function push () {
 
     try {
-        console.log(CHILD_PROCESS.execSync(`git push origin ${branchName}`).toString());
+        runCommand(`git push origin ${branchName}`);
     } catch (err) {
         if (/failed to push some refs to/.test(err.stderr.toString())) {
 
             retryCount += 1;
             if (retryCount <= maxRetries) {
 
-                console.log(CHILD_PROCESS.execSync(`git pull origin ${branchName} --rebase || true`).toString());
+                runCommand(`git pull origin ${branchName} --rebase || true`);
 
                 console.error(`Error pushing changes. Re-trying (${retryCount}/${maxRetries}).`);
 
@@ -116,7 +123,9 @@ function push () {
 
 push();
 
-console.log(CHILD_PROCESS.execSync(`git checkout ${sourceBranchName}`).toString());
+
+// TODO: Optionally checkout original branch again.
+//runCommand(`git checkout ${sourceBranchName}`);
 
 
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
