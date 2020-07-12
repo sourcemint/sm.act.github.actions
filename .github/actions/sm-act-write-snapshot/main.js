@@ -73,6 +73,10 @@ try {
     runCommand(`git checkout --orphan ${branchName}`);
     runCommand(`git rm -rf .`);
 
+    runCommand(`touch README.md`);
+    runCommand(`git add README.md`);
+    runCommand(`git commit -m "[sm.act] Initial commit"`);
+
     // try {
         runCommand(`git push -u origin ${branchName}`);
     // } catch (err) {
