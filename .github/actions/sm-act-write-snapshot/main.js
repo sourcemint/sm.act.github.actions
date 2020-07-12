@@ -62,11 +62,25 @@ const sourceBranchName = runCommand(`git rev-parse --abbrev-ref HEAD`).toString(
 console.log(`[sm.act] Source branch name:`, sourceBranchName);
 
 
+// Remove all changes from the repository.
+// TODO: Store modification summary in report and upload diff as artifact.
 runCommand(`git reset --hard`);
 
-runCommand(`git checkout -t origin/${branchName} || true`);
-
-runCommand(`git checkout --orphan ${branchName} || true`);
+try {
+    runCommand(`git checkout -t origin/${branchName}`);
+} catch (err) {
+    runCommand(`git checkout --orphan ${branchName}`);
+    runCommand(`git rm -rf .`);
+    try {
+        try {
+            runCommand(`git push origin ${branchName}`);
+        } catch (err) {
+            runCommand(`git checkout ${sourceBranchName}`);
+            runCommand(`git branch -D ${branchName}`);
+            runCommand(`git checkout -t origin/${branchName}`);
+        }
+    }
+}
 
 // // @source https://stackoverflow.com/a/3364506
 // runCommand(`git merge -X theirs ${sourceBranchName} || true`);
@@ -154,4 +168,4 @@ console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
 console.log(`::set-output name=reportPath::${reportPath}`);
 console.log(`::set-output name=latestPath::${latestPath}`);
-console.log(`::set-output name=branchName::${latestPath}`);
+console.log(`::set-output name=branchName::${branchName}`);
