@@ -62,7 +62,8 @@ console.log(`Source branch name:`, sourceBranchName);
 runCommand(`git checkout -t origin/${branchName} || true`);
 runCommand(`git checkout -b ${branchName} || true`);
 
-runCommand(`git merge ${sourceBranchName} || true`);
+// @source https://stackoverflow.com/a/3364506
+runCommand(`git merge -X theirs ${sourceBranchName} || true`);
 
 runCommand(`git pull origin ${branchName} --rebase || true`);
 
