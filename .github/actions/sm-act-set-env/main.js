@@ -33,6 +33,7 @@ setEnv('SM_ACT_GIT_REMOTE', `git@github.com:${getEnv('GITHUB_REPOSITORY')}.git`)
 setEnv('SM_ACT_GIT_REF', getEnv('GITHUB_REF'));
 setEnv('SM_ACT_GIT_SHA', getEnv('GITHUB_SHA'));
 setEnv('SM_ACT_GIT_SHA7', getEnv('GITHUB_SHA').substr(0, 7));
+setEnv('SM_ACT_GIT_SHA3', getEnv('GITHUB_SHA').substr(0, 3));
 setEnv('SM_ACT_RUN_ID', `github-actions-${getEnv('GITHUB_RUN_ID')}`);
 setEnv('SM_ACT_NAME', getEnv('GITHUB_JOB'));
 

@@ -124,7 +124,7 @@ function push () {
 
                 console.error(`Error pushing changes. Re-trying (${retryCount}/${maxRetries}).`);
 
-                setTimeout(push, Math.round(Math.random() * 1000));
+                setTimeout(push, Math.round(Math.random() * 1000) * 3);
                 return;
             }
             console.error(`Error pushing changes. Not re-trying again.`);
