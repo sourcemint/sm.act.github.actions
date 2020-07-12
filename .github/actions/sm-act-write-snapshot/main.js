@@ -74,7 +74,7 @@ try {
     runCommand(`git rm -rf .`);
 
     // try {
-        runCommand(`git push origin ${branchName} --force`);
+        runCommand(`git push -u origin ${branchName}`);
     // } catch (err) {
     //     // Another process beat us to it so we use what already exists.
     //     runCommand(`git checkout ${sourceBranchName}`);
