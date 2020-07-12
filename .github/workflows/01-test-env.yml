@@ -1,6 +1,8 @@
 name: "[sm] 01 - Test env"
 on:
   push:
+    branches:
+      - *
     tags-ignore:
       - _/gi0.Sourcemint.org-sm.act/snapshots/*
 jobs:
