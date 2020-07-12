@@ -66,10 +66,10 @@ runCommand(`git reset --hard`);
 
 runCommand(`git checkout -t origin/${branchName} || true`);
 
-runCommand(`git checkout -b ${branchName} || true`);
+runCommand(`git checkout --orphan ${branchName} || true`);
 
-// @source https://stackoverflow.com/a/3364506
-runCommand(`git merge -X theirs ${sourceBranchName} || true`);
+// // @source https://stackoverflow.com/a/3364506
+// runCommand(`git merge -X theirs ${sourceBranchName} || true`);
 
 runCommand(`git fetch origin ${branchName} || true`);
 
@@ -146,8 +146,7 @@ function push () {
 push();
 
 
-// TODO: Optionally checkout original branch again.
-//runCommand(`git checkout ${sourceBranchName}`);
+runCommand(`git checkout ${sourceBranchName}`);
 
 
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
@@ -155,3 +154,4 @@ console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
 
 console.log(`::set-output name=reportPath::${reportPath}`);
 console.log(`::set-output name=latestPath::${latestPath}`);
+console.log(`::set-output name=branchName::${latestPath}`);

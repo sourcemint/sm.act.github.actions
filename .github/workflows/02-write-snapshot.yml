@@ -31,6 +31,7 @@ jobs:
 
       - shell: bash
         run: |
+          git checkout ${{ steps.snapshot.outputs.branchName }}
           cat "${{ steps.snapshot.outputs.reportPath }}"
 
       - name: Upload snapshot
