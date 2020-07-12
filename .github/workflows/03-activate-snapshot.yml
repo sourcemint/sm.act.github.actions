@@ -1,7 +1,8 @@
 name: "[sm] 03 - Activate Snapshot"
 on:
-  tags:
-    - _/gi0.Sourcemint.org-sm.act/snapshots/*
+  push:
+    tags:
+      - _/gi0.Sourcemint.org-sm.act/snapshots/*
 jobs:
   Snapshot:
     runs-on: ubuntu-latest
