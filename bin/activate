@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
 const PATH = require('path');
-const LIB = require("../_/lib");
+const LIB = require("../.github/actions/_/lib");
 
 LIB.main(async function () {
-
 
     const {
         baseDir,

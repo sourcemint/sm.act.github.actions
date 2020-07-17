@@ -4,10 +4,6 @@ const FS = require('fs');
 const CHILD_PROCESS = require('child_process');
 
 
-if (!process.env.SM_ACT_SNAPSHOT_ID) {
-    throw new Error(`'SM_ACT_SNAPSHOT_ID' not set!`);
-}
-
 
 exports.main = function (program) {
     program().then(function () {
@@ -38,18 +34,25 @@ function makeRunCommand (baseDir) {
     }
 }
 
-async function ensureGitConfig () {
+async function ensureGitConfig (baseDir) {
 
-    let author = process.env.SM_ACT_GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
-    if (author) {
-        author[1] = author[1] || process.env.SM_ACT_ACTOR_URI;
-        author[2] = author[2] || 'unknown';
-    } else {
-        author = [null, process.env.SM_ACT_ACTOR_URI, 'unknown'];
+    const runCommand = makeRunCommand(baseDir);
+
+    if (
+        process.env.SM_ACT_GIT_COMMIT_AUTHOR ||
+        process.env.SM_ACT_ACTOR_URI
+    ) {
+        let author = process.env.SM_ACT_GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
+        if (author) {
+            author[1] = author[1] || process.env.SM_ACT_ACTOR_URI;
+            author[2] = author[2] || 'unknown';
+        } else {
+            author = [null, process.env.SM_ACT_ACTOR_URI, 'unknown'];
+        }
+        runCommand(`git config user.name "${author[1]}"`);
+        runCommand(`git config user.email "${author[2]}"`);
+        runCommand(`git config pull.rebase false`);
     }
-    exports.runCommand(`git config user.name "${author[1]}"`);
-    exports.runCommand(`git config user.email "${author[2]}"`);
-    exports.runCommand(`git config pull.rebase false`);
 }
 
 exports.getSourceBranchName = async function () {
@@ -98,12 +101,16 @@ async function ensureBranch (baseDir, branchName) {
 
         runCommand(`git init`);
 
+        await ensureGitConfig(baseDir);
+
         const origin = await getOrigin();
 
         runCommand(`git remote add origin ${origin}`);
         runCommand(`git fetch origin ${branchName}`);
 
     } else {
+
+        await ensureGitConfig(baseDir);
 
         // Remove all changes from the repository.
         // TODO: Store modification summary in report and upload diff as artifact.
@@ -152,8 +159,6 @@ async function ensureBranch (baseDir, branchName) {
 
 exports.ensureWorkingDirClone = async function (type) {
 
-    await ensureGitConfig();
-
     const baseDir = process.cwd();
     const branchName = makeActingBranchName(type);
 
@@ -167,8 +172,6 @@ exports.ensureWorkingDirClone = async function (type) {
 
 exports.ensureTemporaryDirClone = async function (type) {
 
-    await ensureGitConfig();
-
     const baseDir = makeActingTemporaryDirectory(type);
     const branchName = makeActingBranchName(type);
     
@@ -181,6 +184,10 @@ exports.ensureTemporaryDirClone = async function (type) {
 }
 
 exports.pushChanges = async function (baseDir, branchName, type) {
+
+    if (!process.env.SM_ACT_SNAPSHOT_ID) {
+        throw new Error(`'SM_ACT_SNAPSHOT_ID' not set!`);
+    }
 
     const runCommand = makeRunCommand(baseDir);
 
