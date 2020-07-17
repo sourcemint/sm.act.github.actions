@@ -47,13 +47,13 @@ async function ensureGitConfig () {
     } else {
         author = [null, process.env.SM_ACT_ACTOR_URI, 'unknown'];
     }
-    runCommand(`git config user.name "${author[1]}"`);
-    runCommand(`git config user.email "${author[2]}"`);
-    runCommand(`git config pull.rebase false`);
+    exports.runCommand(`git config user.name "${author[1]}"`);
+    exports.runCommand(`git config user.email "${author[2]}"`);
+    exports.runCommand(`git config pull.rebase false`);
 }
 
 exports.getSourceBranchName = async function () {
-    const sourceBranchName = runCommand(`git rev-parse --abbrev-ref HEAD`).toString().replace(/\n$/, '');
+    const sourceBranchName = exports.runCommand(`git rev-parse --abbrev-ref HEAD`).toString().replace(/\n$/, '');
 
     console.log(`[sm.act] Source branch name:`, sourceBranchName);
 
@@ -61,7 +61,7 @@ exports.getSourceBranchName = async function () {
 }
 
 async function getOrigin () {
-    const origin = runCommand(`git config --get remote.origin.url`).toString().replace(/\n$/, '');
+    const origin = exports.runCommand(`git config --get remote.origin.url`).toString().replace(/\n$/, '');
 
     console.log(`[sm.act] Origin:`, origin);
 
