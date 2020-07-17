@@ -120,23 +120,29 @@ async function ensureBranch (baseDir, branchName) {
     try {
         runCommand(`git checkout -t origin/${branchName}`);
     } catch (err) {
-        // Branch does not exist so we create it.
-        runCommand(`git checkout --orphan ${branchName}`);
-        runCommand(`git rm -rf .`);
+
+        try {
+            // Branch does not exist so we create it.
+            runCommand(`git checkout --orphan ${branchName}`);
+
+            runCommand(`git rm -rf .`);
     
-        runCommand(`echo "[sm.act] Branch: ${branchName}" > README`);
-        runCommand(`git add README.md`);
-        runCommand(`git commit -m "[sm.act] Initial commit"`);
-    
-        // try {
-            runCommand(`git push -u origin ${branchName}`);
-        // } catch (err) {
-        //     // Another process beat us to it so we use what already exists.
-        //     runCommand(`git checkout ${sourceBranchName}`);
-        //     runCommand(`git branch -D ${branchName}`);
-        //     runCommand(`git fetch origin/${branchName}`);
-        //     runCommand(`git checkout -t origin/${branchName}`);
-        // }
+            runCommand(`echo "[sm.act] Branch: ${branchName}" > README`);
+            runCommand(`git add README.md`);
+            runCommand(`git commit -m "[sm.act] Initial commit"`);
+        
+            // try {
+                runCommand(`git push -u origin ${branchName}`);
+            // } catch (err) {
+            //     // Another process beat us to it so we use what already exists.
+            //     runCommand(`git checkout ${sourceBranchName}`);
+            //     runCommand(`git branch -D ${branchName}`);
+            //     runCommand(`git fetch origin/${branchName}`);
+            //     runCommand(`git checkout -t origin/${branchName}`);
+            // }
+        } catch (err) {
+            // Branch already exists.
+        }
     }
     
     // // @source https://stackoverflow.com/a/3364506

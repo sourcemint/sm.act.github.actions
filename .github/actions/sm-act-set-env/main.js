@@ -17,7 +17,7 @@ function hash7 (str) {
 const MIN_COMMIT_COUNT = 3;
 const STABLE_COMMIT_COUNT = 7;
 const REPO_GUID = [];
-const commits = CHILD_PROCESS.execSync(`git rev-list --topo-order master | tail -n ${STABLE_COMMIT_COUNT}`).toString().replace(/\n$/, '').split('\n');
+const commits = CHILD_PROCESS.execSync(`git rev-list --topo-order origin/master | tail -n ${STABLE_COMMIT_COUNT}`).toString().replace(/\n$/, '').split('\n');
 
 console.log("commits:", commits);
 
