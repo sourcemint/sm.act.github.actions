@@ -9,6 +9,13 @@ if (!process.env.SM_ACT_SNAPSHOT_ID) {
 }
 
 
+exports.main = function (program) {
+    program().fail(function (err) {
+        console.error('[sm.act] Error:', err.stack || err);
+        process.exit(1);
+    });
+}
+
 exports.writeFile = function (path, content) {
     console.log('[sm.act] Writing file to:', path);
     if (!FS.existsSync(PATH.dirname(path))) FS.mkdirSync(PATH.dirname(path), { recursive: true });
