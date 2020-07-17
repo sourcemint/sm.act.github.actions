@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - dev
-    tags-ignore:
-      - _/gi0.Sourcemint.org-sm.act/snapshots/*
 jobs:
   Snapshot:
     runs-on: ubuntu-latest

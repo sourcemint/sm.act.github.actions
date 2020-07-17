@@ -1,4 +1,10 @@
 
+const CLONE = require("../_/clone");
+
+
+console.log("CLONE:", CLONE);
+
+
 const PATH = require('path');
 const FS = require('fs');
 const CHILD_PROCESS = require('child_process');
