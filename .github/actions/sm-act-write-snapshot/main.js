@@ -1,40 +1,7 @@
 
-const CLONE = require("../_/clone");
-
-
-console.log("CLONE::", CLONE);
-
-
 const PATH = require('path');
-const FS = require('fs');
-const CHILD_PROCESS = require('child_process');
+const LIB = require("../_/lib");
 
-if (!process.env.SM_ACT_SNAPSHOT_ID) {
-    throw new Error(`'SM_ACT_SNAPSHOT_ID' not set!`);
-}
-
-function writeFile (path, content) {
-    console.log('[sm.act] Writing file to:', path);
-    if (!FS.existsSync(PATH.dirname(path))) FS.mkdirSync(PATH.dirname(path), { recursive: true });
-    FS.writeFileSync(path, content, 'utf8');
-}
-
-function runCommand (command) {
-    console.log('[sm.act] Running:', command);
-    const result = CHILD_PROCESS.execSync(command);
-    console.log(result.toString());
-    return result;
-}
-
-const branchName = '_/gi0.Sourcemint.org-sm.act/snapshots';
-
-let author = process.env.SM_ACT_GIT_COMMIT_AUTHOR.match(/^([^<]+)\s*<([^>]*)>$/);
-if (author) {
-    author[1] = author[1] || process.env.SM_ACT_ACTOR_URI;
-    author[2] = author[2] || 'unknown';
-} else {
-    author = [null, process.env.SM_ACT_ACTOR_URI, 'unknown'];
-}
 
 const meta = {};
 Object.keys(process.env).forEach(function (name) {
@@ -59,58 +26,16 @@ const mappingPaths = [
     PATH.join('._', 'gi0.Sourcemint.org~sm.act', 'snapshots-id7', `${process.env.SM_ACT_SNAPSHOT_ID7}`)
 ];
 
-runCommand(`git config user.name "${author[1]}"`);
-runCommand(`git config user.email "${author[2]}"`);
-runCommand(`git config pull.rebase false`);
 
-const sourceBranchName = runCommand(`git rev-parse --abbrev-ref HEAD`).toString().replace(/\n$/, '');
+const sourceBranchName = await LIB.getSourceBranchName();
 
-console.log(`[sm.act] Source branch name:`, sourceBranchName);
+const {
+    baseDir,
+    branchName
+} = await LIB.ensureWorkingDirClone('snapshots');
 
 
-// Remove all changes from the repository.
-// TODO: Store modification summary in report and upload diff as artifact.
-runCommand(`git reset --hard`);
-
-try {
-    runCommand(`git checkout -t origin/${branchName}`);
-} catch (err) {
-    // Branch does not exist so we create it.
-    runCommand(`git checkout --orphan ${branchName}`);
-    runCommand(`git rm -rf .`);
-
-    runCommand(`touch README.md`);
-    runCommand(`git add README.md`);
-    runCommand(`git commit -m "[sm.act] Initial commit"`);
-
-    // try {
-        runCommand(`git push -u origin ${branchName}`);
-    // } catch (err) {
-    //     // Another process beat us to it so we use what already exists.
-    //     runCommand(`git checkout ${sourceBranchName}`);
-    //     runCommand(`git branch -D ${branchName}`);
-    //     runCommand(`git fetch origin/${branchName}`);
-    //     runCommand(`git checkout -t origin/${branchName}`);
-    // }
-}
-
-// // @source https://stackoverflow.com/a/3364506
-// runCommand(`git merge -X theirs ${sourceBranchName} || true`);
-
-runCommand(`git fetch origin ${branchName} || true`);
-
-try {
-    runCommand(`git merge -X theirs origin/${branchName}`);
-} catch (err) {
-    if (/refusing to merge unrelated histories/.test(err.message)) {
-        console.error(`\n\n\n[sm.act] ERROR: It appears we are not dealing with a complete git history. Make sure 'actions/checkout@v2' is configured with 'fetch-depth: 0'.\n\n\n`);
-        throw err;
-    }
-}
-
-runCommand(`git status`);
-
-writeFile(reportPath, JSON.stringify({
+LIB.writeFile(reportPath, JSON.stringify({
     aspect: process.env.SM_ACT_SNAPSHOT_ASPECT,
     aspectOf: process.env.SM_ACT_SNAPSHOT_ASPECT_OF,
     id: process.env.SM_ACT_SNAPSHOT_ID,
@@ -127,52 +52,21 @@ writeFile(reportPath, JSON.stringify({
     env: process.env
 }, null, 4));
 
-writeFile(latestPath, PATH.relative(PATH.dirname(latestPath), reportPath));
+LIB.writeFile(latestPath, PATH.relative(PATH.dirname(latestPath), reportPath));
 mappingPaths.forEach(function (path) {
-    writeFile(path, PATH.relative(PATH.dirname(path), reportPath));
+    LIB.writeFile(path, PATH.relative(PATH.dirname(path), reportPath));
 });
 
-runCommand(`git add "${reportPath}"`);
-runCommand(`git add "${latestPath}"`);
+LIB.runCommand(`git add "${reportPath}"`);
+LIB.runCommand(`git add "${latestPath}"`);
 mappingPaths.forEach(function (path) {
-    runCommand(`git add "${path}"`);
+    LIB.runCommand(`git add "${path}"`);
 });
 
-runCommand(`git status`);
 
-runCommand(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New snapshot: ${process.env.SM_ACT_SNAPSHOT_ID}"`);
+await LIB.pushChanges(baseDir, branchName, 'snapshots');
 
-runCommand(`git status`);
-
-let retryCount = 0;
-let maxRetries = 5;
-function push () {
-
-    try {
-        runCommand(`git push origin ${branchName}`);
-    } catch (err) {
-        if (/failed to push some refs to/.test(err.stderr.toString())) {
-
-            retryCount += 1;
-            if (retryCount <= maxRetries) {
-
-                runCommand(`git pull origin ${branchName} || true`);
-
-                console.error(`Error pushing changes. Re-trying (${retryCount}/${maxRetries}).`);
-
-                setTimeout(push, Math.round(Math.random() * 1000) * 3);
-                return;
-            }
-            console.error(`Error pushing changes. Not re-trying again.`);
-        }
-        throw err;
-    }
-}
-
-push();
-
-
-runCommand(`git checkout ${sourceBranchName}`);
+LIB.runCommand(`git checkout ${sourceBranchName}`);
 
 
 console.log(`Snapshot ID: ${process.env.SM_ACT_SNAPSHOT_ID}`);
