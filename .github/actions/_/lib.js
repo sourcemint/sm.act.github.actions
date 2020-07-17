@@ -10,7 +10,9 @@ if (!process.env.SM_ACT_SNAPSHOT_ID) {
 
 
 exports.main = function (program) {
-    program().fail(function (err) {
+    program().then(function () {
+        process.exit(0);
+    }, function (err) {
         console.error('[sm.act] Error:', err.stack || err);
         process.exit(1);
     });
