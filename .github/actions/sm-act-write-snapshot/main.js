@@ -2,7 +2,7 @@
 const CLONE = require("../_/clone");
 
 
-console.log("CLONE:", CLONE);
+console.log("CLONE::", CLONE);
 
 
 const PATH = require('path');
