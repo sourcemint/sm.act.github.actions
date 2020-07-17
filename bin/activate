@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+const PATH = require('path');
+const LIB = require("../_/lib");
+
+LIB.main(async function () {
+
+
+    const {
+        baseDir,
+        branchName
+    } = await LIB.ensureTemporaryDirClone('snapshots');
+
+
+console.log("baseDir:", baseDir);
+console.log("branchName:", branchName);
+
+
+    // TODO: List snapshots
+
+    // TODO: Create tag
+
+    // branch: _/gi0.Sourcemint.org-sm.act/active
+
+    const snapshotId7 = '';
+
+    const tag = `_/gi0.Sourcemint.org-sm.act/snapshots/${Date.now()}-${snapshotId7}`;
+
+    console.log(`Tagging with:`, tag);
+
+});
