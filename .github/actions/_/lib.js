@@ -124,7 +124,7 @@ async function ensureBranch (baseDir, branchName) {
         runCommand(`git checkout --orphan ${branchName}`);
         runCommand(`git rm -rf .`);
     
-        runCommand(`touch README.md`);
+        runCommand(`echo "[sm.act] Branch: ${branchName}" > README`);
         runCommand(`git add README.md`);
         runCommand(`git commit -m "[sm.act] Initial commit"`);
     
