@@ -1,0 +1,172 @@
+#!/usr/bin/env node
+
+const UTIL = require('util');
+const PATH = require('path');
+const FS = require('fs').promises;
+const GLOB = require('glob');
+GLOB.async = UTIL.promisify(GLOB);
+const INQUIRER = require('inquirer')
+const LIB = require('../.github/actions/_/lib');
+
+LIB.main(async function () {
+
+    async function getRevisions () {
+
+        const {
+            baseDir,
+            branchName
+        } = await LIB.ensureTemporaryDirClone('snapshots');
+
+        const snapshotsDirPrefix = LIB.makeActingDirectoryPrefix('snapshots');
+
+        const runCommand = LIB.makeRunCommand(baseDir);
+
+        let revisions = [];
+
+        try {
+            revisions = runCommand(`git log -n 10 -- ${snapshotsDirPrefix}/* | grep 'New snapshot:'`).toString().replace(/\n$/, '');
+
+            if (revisions) {
+                revisions = revisions.split('\n').map(function (line) {
+                    return line.match(/^.+New snapshot: (.+)$/)[1];
+                }).map(LIB.parseSnapshotId);
+            } else {
+                revisions = [];
+            }
+        } catch (err) {}
+
+        // console.log("revisions:", revisions);
+
+        return revisions;
+    }
+
+    async function getActiveSnapshotIds () {
+
+        const {
+            baseDir,
+            branchName
+        } = await LIB.ensureTemporaryDirClone('snapshots-active');
+
+        const activeDirPrefix = LIB.makeActingDirectoryPrefix('snapshots-active');
+
+        const runCommand = LIB.makeRunCommand(baseDir);
+
+        const filenames = await GLOB.async('**/snapshotId', {
+            cwd: PATH.join(baseDir, activeDirPrefix)
+        });
+
+        const ids = {};
+
+        await Promise.all(filenames.map(async function (filename) {
+            const parts = filename.split('/');
+            const id = parts[0].replace(/~/g, '/');
+            const act = parts[1];
+            const streamName = parts[2];
+            ids[id] = ids[id] || {};
+            ids[id][act] = ids[id][act] || {};
+            ids[id][act][streamName] = await FS.readFile(PATH.join(baseDir, activeDirPrefix, filename), 'utf8');
+        }));
+
+        return ids;
+    }
+
+    async function activateSnapshot (id, streamName) {
+
+        const {
+            baseDir,
+            branchName
+        } = await LIB.ensureTemporaryDirClone('snapshots-active');
+
+        const activeDirPrefix = LIB.makeActingDirectoryPrefix('snapshots-active');
+
+        const runCommand = LIB.makeRunCommand(baseDir);
+
+        const activePath = PATH.join(activeDirPrefix, id.SM_ACT_COMPONENT_ID.replace(/\//g, '~'), id.SM_ACT_NAME, streamName, 'snapshotId');
+
+        LIB.writeFile(PATH.join(baseDir, activePath), id.id);
+
+        runCommand(`git add "${activePath}"`);
+
+        process.env.SM_ACT_SNAPSHOT_ID = id.id;
+
+        await LIB.pushChanges(baseDir, branchName, 'active snapshot', `${branchName}/${id.SM_ACT_COMPONENT_ID.replace(/\//g, '_')}/${id.SM_ACT_NAME}/${streamName}/${id.day}-${id.SM_ACT_GIT_SHA7}`);
+    }
+
+    const revisions = await getRevisions();
+
+    if (!revisions.length) {
+        console.error(`[sm.act] No existing snapshots found!`);
+        process.exit(1);
+    }
+
+    const activeIds = await getActiveSnapshotIds();
+
+    const snapshotId = (await INQUIRER.prompt([
+        {
+            type: 'list',
+            name: 'id',
+            message: 'Pick snapshot to activate:',
+            choices: revisions.map(function (id) {
+
+                let name = `${id.day} ${id.time.replace(/^(\d\d)(\d\d)-(\d\d)$/, '$1:$2:$3')} ${id.SM_ACT_COMPONENT_ID} ${id.SM_ACT_NAME} ${id.SM_ACT_GIT_SHA7} ${id.SM_ACT_GIT_TAG_OR_BRANCH} \t\t `;
+
+                if (
+                    activeIds[id.SM_ACT_COMPONENT_ID] &&
+                    activeIds[id.SM_ACT_COMPONENT_ID][id.SM_ACT_NAME]
+                ) {
+                    Object.keys(activeIds[id.SM_ACT_COMPONENT_ID][id.SM_ACT_NAME]).forEach(function (streamName) {
+                        if (activeIds[id.SM_ACT_COMPONENT_ID][id.SM_ACT_NAME][streamName] === id.id) {
+                            name += `(${streamName})`;
+                        }
+                    });
+                }
+
+                name += ` \t\t ${id.SM_ACT_ACTOR_URI} ${id.SM_ACT_RUN_ID}`;
+
+                return {
+                    name: name,
+                    value: id.id
+                };
+            })
+        }
+    ])).id;
+
+    const parsedSnapshotId = LIB.parseSnapshotId(snapshotId);
+
+    let streamName = (await INQUIRER.prompt([
+        {
+            type: 'list',
+            name: 'name',
+            message: 'Pick stream to activate on:',
+            choices: [
+                {
+                    name: '* NEW *',
+                    value: '_NEW_'
+                }
+            ].concat(
+                (
+                    activeIds[parsedSnapshotId.SM_ACT_COMPONENT_ID] &&
+                    activeIds[parsedSnapshotId.SM_ACT_COMPONENT_ID][parsedSnapshotId.SM_ACT_NAME] &&
+                    Object.keys(activeIds[parsedSnapshotId.SM_ACT_COMPONENT_ID][parsedSnapshotId.SM_ACT_NAME])
+                ) || []
+            )
+        }
+    ])).name;
+
+    if (streamName === '_NEW_') {
+        streamName = (await INQUIRER.prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: 'Enter stream to activate on:',
+                validate: function (value) {
+                    return /^[a-z0-9-]+$/.test(value);
+                }
+            }
+        ])).name;
+    }
+
+    console.log(`[sm.act] Activating snapshot on stream '${streamName}':`, snapshotId);
+
+    await activateSnapshot(parsedSnapshotId, streamName);
+});

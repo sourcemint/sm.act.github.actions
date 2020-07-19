@@ -119,4 +119,4 @@ Tests
 License
 =======
 
-Copyright &copy; 2020 Christoph Dorn. Licensed under the MIT License.
+Copyright &copy; 2020 Christoph Dorn. Licensed under the OSL License.
