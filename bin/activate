@@ -2,6 +2,7 @@
 
 const UTIL = require('util');
 const PATH = require('path');
+const MOMENT = require('moment');
 const FS = require('fs').promises;
 const GLOB = require('glob');
 GLOB.async = UTIL.promisify(GLOB);
@@ -91,7 +92,7 @@ LIB.main(async function () {
 
         await LIB.pushChanges(baseDir, branchName, 'active snapshot');
 
-        const tagName = `${branchName}/${id.SM_ACT_COMPONENT_ID.replace(/\//g, '_')}/${id.SM_ACT_NAME}/${streamName}/${id.day}-${id.SM_ACT_GIT_SHA7}`;
+        const tagName = `${branchName}/${id.SM_ACT_COMPONENT_ID.replace(/\//g, '_')}/${id.SM_ACT_NAME}/${streamName}/${MOMENT().format('YYMMDD-HHmmss')}-${id.SM_ACT_GIT_SHA7}`;
 
         LIB.runCommand(`git tag ${tagName} ${id.SM_ACT_GIT_SHA7}`);
 
