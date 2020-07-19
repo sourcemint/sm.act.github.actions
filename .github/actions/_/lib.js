@@ -215,7 +215,7 @@ exports.ensureTemporaryDirClone = async function (type) {
     };
 }
 
-exports.pushChanges = async function (baseDir, branchName, type, tag) {
+exports.pushChanges = async function (baseDir, branchName, type) {
 
     const SM_ACT_SNAPSHOT_ID = process.env.SM_ACT_SNAPSHOT_ID;
     if (!SM_ACT_SNAPSHOT_ID) {
@@ -227,10 +227,6 @@ exports.pushChanges = async function (baseDir, branchName, type, tag) {
     runCommand(`git status`);
 
     runCommand(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New ${type}: ${SM_ACT_SNAPSHOT_ID}" || true`);
-
-    if (tag) {
-        runCommand(`git tag ${tag}`);
-    }
 
     runCommand(`git status`);
 
