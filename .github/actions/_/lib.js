@@ -26,7 +26,8 @@ exports.runCommand = function (command, options) {
     console.log(result.toString());
     return result;
 }
-function makeRunCommand (baseDir) {
+
+exports.makeRunCommand = function (baseDir) {
     return function (command) {
         return exports.runCommand(command, {
             cwd: baseDir
@@ -34,9 +35,26 @@ function makeRunCommand (baseDir) {
     }
 }
 
+exports.parseSnapshotId = function (id) {
+    const parts = id.split(':');
+    return {
+        'id': id,
+        'day': parts[0],
+        'SM_ACT_REPO_GUID': parts[1],
+        'SM_ACT_REPO_URI': parts[2],
+        'SM_ACT_COMPONENT_ID': parts[3],
+        'SM_ACT_NAME': parts[4],
+        'SM_ACT_GIT_SHA7': parts[5],
+        'SM_ACT_GIT_TAG_OR_BRANCH': parts[6],
+        'time': parts[7],
+        'SM_ACT_ACTOR_URI': parts[8],
+        'SM_ACT_RUN_ID': parts[9]
+    };
+}
+
 async function ensureGitConfig (baseDir) {
 
-    const runCommand = makeRunCommand(baseDir);
+    const runCommand = exports.makeRunCommand(baseDir);
 
     if (
         process.env.SM_ACT_GIT_COMMIT_AUTHOR ||
@@ -79,10 +97,18 @@ function makeActingBranchName (type) {
     return branchName;
 }
 
+exports.makeActingDirectoryPrefix = function (type) {
+    const baseDir = PATH.join('._', 'gi0.Sourcemint.org~sm.act', type);
+
+    console.log(`[sm.act] Acting base directory:`, baseDir);
+
+    return baseDir;
+}
+
 function makeActingTemporaryDirectory (type) {
     const baseDir = PATH.join('.~', 'gi0.Sourcemint.org~sm.act', type);
 
-    console.log(`[sm.act] Acting base directory:`, baseDir);
+    console.log(`[sm.act] Acting temporary base directory:`, baseDir);
 
     return baseDir;
 }
@@ -91,7 +117,7 @@ async function ensureBranch (baseDir, branchName) {
 
     console.log(`[sm.act] Ensure branch '${branchName}' at:`, baseDir);
 
-    const runCommand = makeRunCommand(baseDir);
+    const runCommand = exports.makeRunCommand(baseDir);
     // const sourceBranchName = await getSourceBranchName();
 
     if (!FS.existsSync(baseDir)) {
@@ -106,7 +132,7 @@ async function ensureBranch (baseDir, branchName) {
         const origin = await getOrigin();
 
         runCommand(`git remote add origin ${origin}`);
-        runCommand(`git fetch origin ${branchName}`);
+        runCommand(`git fetch origin ${branchName} || true`);
 
     } else {
 
@@ -191,15 +217,16 @@ exports.ensureTemporaryDirClone = async function (type) {
 
 exports.pushChanges = async function (baseDir, branchName, type) {
 
-    if (!process.env.SM_ACT_SNAPSHOT_ID) {
+    const SM_ACT_SNAPSHOT_ID = process.env.SM_ACT_SNAPSHOT_ID;
+    if (!SM_ACT_SNAPSHOT_ID) {
         throw new Error(`'SM_ACT_SNAPSHOT_ID' not set!`);
     }
 
-    const runCommand = makeRunCommand(baseDir);
+    const runCommand = exports.makeRunCommand(baseDir);
 
     runCommand(`git status`);
 
-    runCommand(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New ${type}: ${process.env.SM_ACT_SNAPSHOT_ID}"`);
+    runCommand(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New ${type}: ${SM_ACT_SNAPSHOT_ID}"`);
 
     runCommand(`git status`);
 
