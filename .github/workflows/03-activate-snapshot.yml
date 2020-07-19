@@ -2,7 +2,7 @@ name: "[sm] 03 - Activate Snapshot"
 on:
   push:
     branches:
-      - _/gi0.Sourcemint.org-sm.act/active
+      - _/gi0.Sourcemint.org-sm.act/snapshots-active/*
 jobs:
   Snapshot:
     runs-on: ubuntu-latest

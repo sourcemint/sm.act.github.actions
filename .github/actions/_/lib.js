@@ -89,7 +89,7 @@ async function getOrigin () {
     return origin;
 }
 
-function makeActingBranchName (type) {
+exports.makeActingBranchName = function (type) {
     const branchName = PATH.join('_', 'gi0.Sourcemint.org-sm.act', type);
 
     console.log(`[sm.act] Acting branch name:`, branchName);
@@ -192,7 +192,7 @@ async function ensureBranch (baseDir, branchName) {
 exports.ensureWorkingDirClone = async function (type) {
 
     const baseDir = process.cwd();
-    const branchName = makeActingBranchName(type);
+    const branchName = exports.makeActingBranchName(type);
 
     await ensureBranch(baseDir, branchName);
 
@@ -205,7 +205,7 @@ exports.ensureWorkingDirClone = async function (type) {
 exports.ensureTemporaryDirClone = async function (type) {
 
     const baseDir = makeActingTemporaryDirectory(type);
-    const branchName = makeActingBranchName(type);
+    const branchName = exports.makeActingBranchName(type);
     
     await ensureBranch(baseDir, branchName);
 
@@ -215,7 +215,7 @@ exports.ensureTemporaryDirClone = async function (type) {
     };
 }
 
-exports.pushChanges = async function (baseDir, branchName, type) {
+exports.pushChanges = async function (baseDir, branchName, type, tag) {
 
     const SM_ACT_SNAPSHOT_ID = process.env.SM_ACT_SNAPSHOT_ID;
     if (!SM_ACT_SNAPSHOT_ID) {
@@ -226,7 +226,11 @@ exports.pushChanges = async function (baseDir, branchName, type) {
 
     runCommand(`git status`);
 
-    runCommand(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New ${type}: ${SM_ACT_SNAPSHOT_ID}"`);
+    runCommand(`git commit -m "[gi0.Sourcemint.org/sm.act.github.actions] New ${type}: ${SM_ACT_SNAPSHOT_ID}" || true`);
+
+    if (tag) {
+        runCommand(`git tag ${tag}`);
+    }
 
     runCommand(`git status`);
 
@@ -237,7 +241,7 @@ exports.pushChanges = async function (baseDir, branchName, type) {
         function push () {
         
             try {
-                runCommand(`git push origin ${branchName}`);
+                runCommand(`git push origin ${branchName} --tags`);
 
                 resolve();
             } catch (err) {

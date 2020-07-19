@@ -21,9 +21,19 @@ LIB.main(async function () {
 
         const runCommand = LIB.makeRunCommand(baseDir);
 
-        const revisions = runCommand(`git log -n 10 -- ${snapshotsDirPrefix}/20-07-12/* | grep 'New snapshot:'`).toString().replace(/\n$/, '').split('\n').map(function (line) {
-            return line.match(/^.+New snapshot: (.+)$/)[1];
-        }).map(LIB.parseSnapshotId);
+        let revisions = [];
+
+        try {
+            revisions = runCommand(`git log -n 10 -- ${snapshotsDirPrefix}/* | grep 'New snapshot:'`).toString().replace(/\n$/, '');
+
+            if (revisions) {
+                revisions = revisions.split('\n').map(function (line) {
+                    return line.match(/^.+New snapshot: (.+)$/)[1];
+                }).map(LIB.parseSnapshotId);
+            } else {
+                revisions = [];
+            }
+        } catch (err) {}
 
         // console.log("revisions:", revisions);
 
@@ -79,10 +89,15 @@ LIB.main(async function () {
 
         process.env.SM_ACT_SNAPSHOT_ID = id.id;
 
-        await LIB.pushChanges(baseDir, branchName, 'snapshots-active');
+        await LIB.pushChanges(baseDir, branchName, 'active snapshot', `${branchName}/${id.SM_ACT_COMPONENT_ID.replace(/\//g, '_')}/${id.SM_ACT_NAME}/${streamName}/${id.day}-${id.SM_ACT_GIT_SHA7}`);
     }
 
     const revisions = await getRevisions();
+
+    if (!revisions.length) {
+        console.error(`[sm.act] No existing snapshots found!`);
+        process.exit(1);
+    }
 
     const activeIds = await getActiveSnapshotIds();
 
@@ -129,9 +144,11 @@ LIB.main(async function () {
                     value: '_NEW_'
                 }
             ].concat(
-                activeIds[parsedSnapshotId.SM_ACT_COMPONENT_ID] &&
-                activeIds[parsedSnapshotId.SM_ACT_COMPONENT_ID][parsedSnapshotId.SM_ACT_NAME] &&
-                Object.keys(activeIds[parsedSnapshotId.SM_ACT_COMPONENT_ID][parsedSnapshotId.SM_ACT_NAME])
+                (
+                    activeIds[parsedSnapshotId.SM_ACT_COMPONENT_ID] &&
+                    activeIds[parsedSnapshotId.SM_ACT_COMPONENT_ID][parsedSnapshotId.SM_ACT_NAME] &&
+                    Object.keys(activeIds[parsedSnapshotId.SM_ACT_COMPONENT_ID][parsedSnapshotId.SM_ACT_NAME])
+                ) || []
             )
         }
     ])).name;
