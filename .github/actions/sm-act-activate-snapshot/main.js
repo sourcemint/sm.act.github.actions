@@ -11,7 +11,7 @@ console.log('TODO: Activate snapshot ...', process.env);
     // '_/gi0.Sourcemint.org-sm.act/snapshots-active/_/Snapshot/release/200718-230743-7259c9d'
     let tagName = process.env.SM_ACT_GIT_TAG;
 
-    if (tagName.substring(0, tagName.length + 1) === `${tagName}/`) {
+    if (tagName.substring(0, tagName.length + 1) === `${branchName}/`) {
         tagName = tagName.substring(tagName.length + 1);
     }
 
