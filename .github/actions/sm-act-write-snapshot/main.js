@@ -65,7 +65,7 @@ LIB.main(async function () {
     });
 
 
-    await LIB.pushChanges(baseDir, branchName, 'snapshots');
+    await LIB.pushChanges(baseDir, branchName, 'snapshot');
 
     LIB.runCommand(`git checkout ${sourceBranchName}`);
 
