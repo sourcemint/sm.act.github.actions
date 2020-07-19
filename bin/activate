@@ -89,7 +89,13 @@ LIB.main(async function () {
 
         process.env.SM_ACT_SNAPSHOT_ID = id.id;
 
-        await LIB.pushChanges(baseDir, branchName, 'active snapshot', `${branchName}/${id.SM_ACT_COMPONENT_ID.replace(/\//g, '_')}/${id.SM_ACT_NAME}/${streamName}/${id.day}-${id.SM_ACT_GIT_SHA7}`);
+        await LIB.pushChanges(baseDir, branchName, 'active snapshot');
+
+        const tagName = `${branchName}/${id.SM_ACT_COMPONENT_ID.replace(/\//g, '_')}/${id.SM_ACT_NAME}/${streamName}/${id.day}-${id.SM_ACT_GIT_SHA7}`;
+
+        LIB.runCommand(`git tag ${tagName} ${id.SM_ACT_GIT_SHA7}`);
+
+        LIB.runCommand(`git push origin --tags`);
     }
 
     const revisions = await getRevisions();
