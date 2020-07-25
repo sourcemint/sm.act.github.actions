@@ -6,10 +6,17 @@ const MOMENT = require('moment');
 const FS = require('fs').promises;
 const GLOB = require('glob');
 GLOB.async = UTIL.promisify(GLOB);
+const MINIMIST = require('minimist');
 const INQUIRER = require('inquirer')
 const LIB = require('../.github/actions/_/lib');
 
 LIB.main(async function () {
+
+    const args = MINIMIST(process.argv.slice(2), {
+        boolean: [
+            'local'
+        ]
+    });
 
     async function getRevisions () {
 
@@ -97,6 +104,11 @@ LIB.main(async function () {
         LIB.runCommand(`git tag ${tagName} ${id.SM_ACT_GIT_SHA7}`);
 
         LIB.runCommand(`git push origin --tags`);
+
+        if (args.local) {
+            process.env.SM_ACT_GIT_TAG = tagName;
+            require('../.github/actions/sm-act-activate-snapshot/main');
+        }
     }
 
     const revisions = await getRevisions();
@@ -147,7 +159,7 @@ LIB.main(async function () {
             message: 'Pick stream to activate on:',
             choices: [
                 {
-                    name: '* NEW *',
+                    name: '* Create NEW stream *',
                     value: '_NEW_'
                 }
             ].concat(

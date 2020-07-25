@@ -6,12 +6,17 @@ const CHILD_PROCESS = require('child_process');
 
 
 exports.main = function (program) {
-    program().then(function () {
-        process.exit(0);
-    }, function (err) {
+    try {
+        program().then(function () {
+            process.exit(0);
+        }, function (err) {
+            console.error('[sm.act] Error:', err.stack || err);
+            process.exit(1);
+        });
+    } catch (err) {
         console.error('[sm.act] Error:', err.stack || err);
         process.exit(1);
-    });
+    }
 }
 
 exports.writeFile = function (path, content) {
@@ -208,6 +213,11 @@ exports.ensureTemporaryDirClone = async function (type) {
     const branchName = exports.makeActingBranchName(type);
     
     await ensureBranch(baseDir, branchName);
+
+console.error("2222", {
+    baseDir,
+    branchName
+});
 
     return {
         baseDir,
