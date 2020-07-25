@@ -1,0 +1,58 @@
+{
+    "#": "gi0.PINF.it/core/v0",
+
+    "#": {
+        "/.~/gi0.Sourcemint.org~sm.act/snapshots-activate": "sm.act.github.actions"
+    },
+
+    ":activate:": "/.~/gi0.Sourcemint.org~sm.act/snapshots-activate @ activate/v1",
+
+    "gi0.PINF.it/build/v0 @ # :activate: build() /.~/gi0.Sourcemint.org~sm.act/snapshots-activate": {
+        "onActivate": (javascript (require) >>>
+
+            const FS = require("fs").promises;
+
+            return async function (snapshot) {
+
+                delete snapshot.env;
+                console.log("Run activation!", snapshot);
+
+                let readme = await FS.readFile('../../README.md', 'utf8');
+
+
+console.log('split by', String.fromCharCode(96, 96, 96));
+                let segments = readme.split('```');
+
+console.log("segments", segments);                
+
+                segments.forEach(function (segment) {
+
+                    let replacement = null;
+
+                    if (/^\nSM_ACT_REPO_GUID=/.test(segment)) {
+
+console.log("REPLACE 1", segment);
+
+                        replacement = Object.keys(snapshot.meta).map(function (name) {
+                            return `SM_ACT_${name}=${snapshot.meta[name]}`;
+                        }).join('\n');
+
+                    } else
+                    if (/^\n\{\n\s+"aspect":/.test(segment)) {
+
+console.log("REPLACE 2", segment);
+
+                        replacement = JSON.parse(JSON.stringify(snapshot));
+                        replacement.env = {};
+                        replacement = JSON.stringify(replacement, null, 5);
+                    }
+
+                    if (replacement) {
+console.log("replacement", replacement);                        
+                    }
+
+                });
+            }
+        <<<)
+    }
+}

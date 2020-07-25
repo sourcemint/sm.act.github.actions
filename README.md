@@ -16,7 +16,7 @@ Job `step` configuration:
   uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@master
 ```
 
-Sets the following environment variables:
+Sets and shows the following environment variables:
 
 ```
 SM_ACT_REPO_GUID=3-02453f6-7-136
@@ -109,12 +109,32 @@ Reports are written to a `_/gi0.Sourcemint.org-sm.act/snapshots` branch and stor
 }
 ```
 
+Activate Snapshot
+-----------------
+
+Snapshots are activated on **Named Streams** using `./bin/activate [--local]`.
+
+Active snapshot references are written to a `_/gi0.Sourcemint.org-sm.act/snapshots-active` branch and stored at:
+
+  * `._/gi0.Sourcemint.org~sm.act/snapshots-active/<SM_ACT_COMPONENT_ID>/<SM_ACT_NAME>/snapshotId`
+
+Upon activation a git tag is set at `_/gi0.Sourcemint.org-sm.act/snapshots-active/<SM_ACT_COMPONENT_ID>/<SM_ACT_NAME>/<StreamName>/<Date>-<Time>-<SM_ACT_GIT_SHA7>` and the following job `step` configuration runs:
+
+```
+- name: "[sm.act] Activate snapshot"
+  uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-activate-snapshot@master
+```
+
+This `step` activates the snapshot using `./#!/gi0.Sourcemint.org/#!sm.act.activate.inf.json`.
+
+
 Tests
 =====
 
   * ![[sm] 01 - Test env](https://github.com/sourcemint/sm.act.github.actions/workflows/%5Bsm%5D%2001%20-%20Test%20env/badge.svg)
   * ![[sm] 02 - Write Snapshot](https://github.com/sourcemint/sm.act.github.actions/workflows/%5Bsm%5D%2002%20-%20Write%20Snapshot/badge.svg)
   * ![[sm] 03 - Activate Snapshot](https://github.com/sourcemint/sm.act.github.actions/workflows/%5Bsm%5D%2003%20-%20Activate%20Snapshot/badge.svg)
+
 
 License
 =======

@@ -1,4 +1,5 @@
 {
+  "name": "sm.act.github.actions",
   "dependencies": {
     "glob": "7.1.6",
     "inquirer": "^7.3.2",

@@ -4,52 +4,54 @@ const FS = require('fs').promises;
 const LIB = require("../_/lib");
 
 LIB.main(async function () {
+    
+    async function getSnapshotIdForTag(tagName) {
 
-console.log('TODO: Activate snapshot ...LLLLL');
+        const {
+            baseDir,
+            branchName
+        } = await LIB.ensureTemporaryDirClone('snapshots-active');
+    
+        // '_/gi0.Sourcemint.org-sm.act/snapshots-active/_/Snapshot/release/200718-230743-7259c9d'
+        if (tagName.substring(0, branchName.length + 1) === `${branchName}/`) {
+            tagName = tagName.substring(branchName.length + 1);
+        }
+        const tagParts = tagName.split('/');
+        const compId = tagParts[0].replace(/_/g, '/');
+        const actName = tagParts[1];
+        const streamName = tagParts[2];
 
-    const {
-        baseDir,
-        branchName
-    } = await LIB.ensureTemporaryDirClone('snapshots-active');
+        const activeDirPrefix = LIB.makeActingDirectoryPrefix('snapshots-active');
+        const activePath = PATH.join(baseDir, activeDirPrefix, compId.replace(/\//g, '~'), actName, streamName, 'snapshotId');
+        const snapshotId = await FS.readFile(activePath, 'utf8');
 
-console.error("baseDir::", baseDir);
-console.error("branchName::", branchName);
-
-//    const branchName = LIB.makeActingBranchName('snapshots-active');
-
-    // '_/gi0.Sourcemint.org-sm.act/snapshots-active/_/Snapshot/release/200718-230743-7259c9d'
-    let tagName = process.env.SM_ACT_GIT_TAG;
-
-console.log("tagName::", tagName);
-
-    if (tagName.substring(0, branchName.length + 1) === `${branchName}/`) {
-        tagName = tagName.substring(branchName.length + 1);
+        return snapshotId;
     }
 
-    const tagParts = tagName.split('/');
-    const compId = tagParts[0].replace(/_/g, '/');
-    const actName = tagParts[1];
-    const streamName = tagParts[2];
+    async function getSnapshotForTag (snapshotId) {
 
-console.log('tagName:', tagName);
-console.log('tagParts:', tagParts);
-console.log('compId:', compId);
-console.log('actName:', actName);
-console.log('streamName:', streamName);
+        const {
+            baseDir,
+            branchName
+        } = await LIB.ensureTemporaryDirClone('snapshots');
 
-    const activeDirPrefix = LIB.makeActingDirectoryPrefix('snapshots-active');
+        const snapshotFsId = snapshotId.replace(/\//g, '~').replace(/:/g, '\/');
+        const snapshotDirPrefix = LIB.makeActingDirectoryPrefix('snapshots');
+        const reportPath = PATH.join(baseDir, snapshotDirPrefix, `${snapshotFsId}.json`);
+        const snapshot = await FS.readFile(reportPath, 'utf8');
+        return JSON.parse(snapshot);
+    }
 
-//    const runCommand = LIB.makeRunCommand(baseDir);
-
-    const activePath = PATH.join(activeDirPrefix, compId.replace(/\//g, '~'), actName, streamName, 'snapshotId');
-
-console.log("activePath:", activePath);
-
-    const snapshotId = await FS.readFile(activePath, 'utf8');
-
-console.log("snapshotId:", snapshotId);
+    const snapshotId = await getSnapshotIdForTag(process.env.SM_ACT_GIT_TAG);
 
     console.log(`[sm.act] Activating snapshot with id:`, snapshotId);
 
+    // const snapshot = await getSnapshotForTag(snapshotId);
+    // delete snapshot.env;
 
-});
+    // console.log(`[sm.act] Activating snapshot:`, snapshot);
+
+    process.env.SM_ACT_SNAPSHOT_ID = snapshotId;
+    LIB.runCommand(`pinf.it './#!/gi0.Sourcemint.org/#!sm.act.activate.inf.json'`);
+
+}, module);

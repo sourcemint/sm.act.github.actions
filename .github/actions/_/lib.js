@@ -5,18 +5,26 @@ const CHILD_PROCESS = require('child_process');
 
 
 
-exports.main = function (program) {
-    try {
-        program().then(function () {
-            process.exit(0);
-        }, function (err) {
+exports.main = function (program, module) {
+    if (
+        !module ||
+        require.main === module.id
+    ) {
+        try {
+            program().then(function () {
+                process.exit(0);
+            }, function (err) {
+                console.error('[sm.act] Error:', err.stack || err);
+                process.exit(1);
+            });
+        } catch (err) {
             console.error('[sm.act] Error:', err.stack || err);
             process.exit(1);
-        });
-    } catch (err) {
-        console.error('[sm.act] Error:', err.stack || err);
-        process.exit(1);
-    }
+        }
+    } else
+    if (module) {
+        module.exports.main = program;
+   }
 }
 
 exports.writeFile = function (path, content) {
@@ -211,13 +219,8 @@ exports.ensureTemporaryDirClone = async function (type) {
 
     const baseDir = makeActingTemporaryDirectory(type);
     const branchName = exports.makeActingBranchName(type);
-    
-    await ensureBranch(baseDir, branchName);
 
-console.error("2222", {
-    baseDir,
-    branchName
-});
+    await ensureBranch(baseDir, branchName);
 
     return {
         baseDir,

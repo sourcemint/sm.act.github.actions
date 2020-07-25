@@ -107,7 +107,7 @@ LIB.main(async function () {
 
         if (args.local) {
             process.env.SM_ACT_GIT_TAG = tagName;
-            require('../.github/actions/sm-act-activate-snapshot/main');
+            await require('../.github/actions/sm-act-activate-snapshot/main').main();
         }
     }
 
@@ -123,6 +123,7 @@ LIB.main(async function () {
     const snapshotId = (await INQUIRER.prompt([
         {
             type: 'list',
+            loop: false,
             name: 'id',
             message: 'Pick snapshot to activate:',
             choices: revisions.map(function (id) {
