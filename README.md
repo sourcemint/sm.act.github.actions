@@ -23,24 +23,24 @@ SM_ACT_REPO_GUID=3-02453f6-7-136
 SM_ACT_REPO_URI=github.com/sourcemint/sm.act.github.actions
 SM_ACT_GIT_REMOTE=git@github.com:sourcemint/sm.act.github.actions.git
 SM_ACT_GIT_REF=refs/heads/dev
-SM_ACT_GIT_SHA=f62706cb72413bfb9ab7d2fc09921c1ea7ae2eae
-SM_ACT_GIT_SHA7=f62706c
-SM_ACT_GIT_SHA3=f62
-SM_ACT_RUN_ID=github-actions-266371009
+SM_ACT_GIT_SHA=bcf6f97fc37728a6a6ea83e919d53bce33024d39
+SM_ACT_GIT_SHA7=bcf6f97
+SM_ACT_GIT_SHA3=bcf
+SM_ACT_RUN_ID=github-actions-266374575
 SM_ACT_NAME=Snapshot
 SM_ACT_ACTOR_URI=github.com/cadorn
 SM_ACT_TRIGGER_EVENT=push
 SM_ACT_COMPONENT_ID=/
 SM_ACT_GIT_BRANCH=dev
 SM_ACT_GIT_COMMIT_AUTHOR=Christoph Dorn <christoph@christophdorn.com>
-SM_ACT_GIT_COMMIT_DATE=Mon Sep 21 22:58:31 2020 -0700
+SM_ACT_GIT_COMMIT_DATE=Mon Sep 21 23:02:52 2020 -0700
 SM_ACT_GIT_COMMIT_MESSAGE=wip
 SM_ACT_ID=3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot
 SM_ACT_FSID=3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot
-SM_ACT_SNAPSHOT_ID=20-09-22:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:f62706c:dev:0600-15:github.com/cadorn:github-actions-266371009
-SM_ACT_SNAPSHOT_ID7=4c1e5e9
-SM_ACT_SNAPSHOT_HID=20-09-22:78ae465:e9a0cb3:42099b4:b08ae37:f62706c:34c6fce:0600-15:57e542e:cba40e6
-SM_ACT_SNAPSHOT_FSID=20-09-22/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/f62706c/dev/0600-15/github.com~cadorn/github-actions-266371009
+SM_ACT_SNAPSHOT_ID=20-09-22:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:bcf6f97:dev:0603-14:github.com/cadorn:github-actions-266374575
+SM_ACT_SNAPSHOT_ID7=32a4465
+SM_ACT_SNAPSHOT_HID=20-09-22:78ae465:e9a0cb3:42099b4:b08ae37:bcf6f97:34c6fce:0603-14:57e542e:70e4a0a
+SM_ACT_SNAPSHOT_FSID=20-09-22/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/bcf6f97/dev/0603-14/github.com~cadorn/github-actions-266374575
 SM_ACT_SNAPSHOT_ASPECT=Snapshot
 SM_ACT_SNAPSHOT_ASPECT_OF=3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/
 ```
@@ -69,39 +69,39 @@ Reports are written to a `_/gi0.Sourcemint.org-sm.act/snapshots` branch and stor
 {
      "aspect": "Snapshot",
      "aspectOf": "3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/",
-     "id": "20-09-22:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:f62706c:dev:0600-15:github.com/cadorn:github-actions-266371009",
-     "id7": "4c1e5e9",
-     "hid": "20-09-22:78ae465:e9a0cb3:42099b4:b08ae37:f62706c:34c6fce:0600-15:57e542e:cba40e6",
-     "fsid": "20-09-22/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/f62706c/dev/0600-15/github.com~cadorn/github-actions-266371009",
+     "id": "20-09-22:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:bcf6f97:dev:0603-14:github.com/cadorn:github-actions-266374575",
+     "id7": "32a4465",
+     "hid": "20-09-22:78ae465:e9a0cb3:42099b4:b08ae37:bcf6f97:34c6fce:0603-14:57e542e:70e4a0a",
+     "fsid": "20-09-22/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/bcf6f97/dev/0603-14/github.com~cadorn/github-actions-266374575",
      "logs": {
-          "url": "https://api.github.com/repos/sourcemint/sm.act.github.actions/actions/runs/266371009/logs"
+          "url": "https://api.github.com/repos/sourcemint/sm.act.github.actions/actions/runs/266374575/logs"
      },
      "artifacts": {
-          "url": "https://api.github.com/repos/sourcemint/sm.act.github.actions/actions/runs/266371009/artifacts"
+          "url": "https://api.github.com/repos/sourcemint/sm.act.github.actions/actions/runs/266374575/artifacts"
      },
      "meta": {
           "REPO_GUID": "3-02453f6-7-136",
           "REPO_URI": "github.com/sourcemint/sm.act.github.actions",
           "GIT_REMOTE": "git@github.com:sourcemint/sm.act.github.actions.git",
           "GIT_REF": "refs/heads/dev",
-          "GIT_SHA": "f62706cb72413bfb9ab7d2fc09921c1ea7ae2eae",
-          "GIT_SHA7": "f62706c",
-          "GIT_SHA3": "f62",
-          "RUN_ID": "github-actions-266371009",
+          "GIT_SHA": "bcf6f97fc37728a6a6ea83e919d53bce33024d39",
+          "GIT_SHA7": "bcf6f97",
+          "GIT_SHA3": "bcf",
+          "RUN_ID": "github-actions-266374575",
           "NAME": "Snapshot",
           "ACTOR_URI": "github.com/cadorn",
           "TRIGGER_EVENT": "push",
           "COMPONENT_ID": "/",
           "GIT_BRANCH": "dev",
           "GIT_COMMIT_AUTHOR": "Christoph Dorn <christoph@christophdorn.com>",
-          "GIT_COMMIT_DATE": "Mon Sep 21 22:58:31 2020 -0700",
+          "GIT_COMMIT_DATE": "Mon Sep 21 23:02:52 2020 -0700",
           "GIT_COMMIT_MESSAGE": "wip",
           "ID": "3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot",
           "FSID": "3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot",
-          "SNAPSHOT_ID": "20-09-22:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:f62706c:dev:0600-15:github.com/cadorn:github-actions-266371009",
-          "SNAPSHOT_ID7": "4c1e5e9",
-          "SNAPSHOT_HID": "20-09-22:78ae465:e9a0cb3:42099b4:b08ae37:f62706c:34c6fce:0600-15:57e542e:cba40e6",
-          "SNAPSHOT_FSID": "20-09-22/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/f62706c/dev/0600-15/github.com~cadorn/github-actions-266371009",
+          "SNAPSHOT_ID": "20-09-22:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:bcf6f97:dev:0603-14:github.com/cadorn:github-actions-266374575",
+          "SNAPSHOT_ID7": "32a4465",
+          "SNAPSHOT_HID": "20-09-22:78ae465:e9a0cb3:42099b4:b08ae37:bcf6f97:34c6fce:0603-14:57e542e:70e4a0a",
+          "SNAPSHOT_FSID": "20-09-22/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/bcf6f97/dev/0603-14/github.com~cadorn/github-actions-266374575",
           "SNAPSHOT_ASPECT": "Snapshot",
           "SNAPSHOT_ASPECT_OF": "3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/"
      },
