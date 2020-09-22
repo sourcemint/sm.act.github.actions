@@ -12,10 +12,10 @@ jobs:
           fetch-depth: 0
 
       - name: "[sm.act] Set env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@bcf6f97
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@53150e7d001c2c4ed3cc0b2d9eb9fc608e3c7b41
 
       - name: "[sm.act] Show env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@bcf6f97
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@53150e7d001c2c4ed3cc0b2d9eb9fc608e3c7b41
 
       - shell: bash
         run: |
@@ -29,7 +29,7 @@ jobs:
 
       - name: "[sm.act] Write snapshot report"
         id: snapshot
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-write-snapshot@bcf6f97
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-write-snapshot@53150e7d001c2c4ed3cc0b2d9eb9fc608e3c7b41
 
       - shell: bash
         run: |
