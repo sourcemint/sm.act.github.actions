@@ -23,24 +23,24 @@ SM_ACT_REPO_GUID=3-02453f6-7-136
 SM_ACT_REPO_URI=github.com/sourcemint/sm.act.github.actions
 SM_ACT_GIT_REMOTE=git@github.com:sourcemint/sm.act.github.actions.git
 SM_ACT_GIT_REF=refs/heads/dev
-SM_ACT_GIT_SHA=6a422689edf9d3e087fc3f072ccb57ed8a88e012
-SM_ACT_GIT_SHA7=6a42268
-SM_ACT_GIT_SHA3=6a4
-SM_ACT_RUN_ID=github-actions-258758954
+SM_ACT_GIT_SHA=5614081db2c453331505879e0793bb45b8919072
+SM_ACT_GIT_SHA7=5614081
+SM_ACT_GIT_SHA3=561
+SM_ACT_RUN_ID=github-actions-266311395
 SM_ACT_NAME=Snapshot
 SM_ACT_ACTOR_URI=github.com/cadorn
 SM_ACT_TRIGGER_EVENT=push
 SM_ACT_COMPONENT_ID=/
 SM_ACT_GIT_BRANCH=dev
 SM_ACT_GIT_COMMIT_AUTHOR=Christoph Dorn <christoph@christophdorn.com>
-SM_ACT_GIT_COMMIT_DATE=Wed Sep 16 22:18:06 2020 -0700
-SM_ACT_GIT_COMMIT_MESSAGE=fix
+SM_ACT_GIT_COMMIT_DATE=Mon Sep 21 21:58:22 2020 -0700
+SM_ACT_GIT_COMMIT_MESSAGE=wip
 SM_ACT_ID=3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot
 SM_ACT_FSID=3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot
-SM_ACT_SNAPSHOT_ID=20-09-17:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:6a42268:dev:0518-38:github.com/cadorn:github-actions-258758954
-SM_ACT_SNAPSHOT_ID7=b986814
-SM_ACT_SNAPSHOT_HID=20-09-17:78ae465:e9a0cb3:42099b4:b08ae37:6a42268:34c6fce:0518-38:57e542e:103a6c0
-SM_ACT_SNAPSHOT_FSID=20-09-17/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/6a42268/dev/0518-38/github.com~cadorn/github-actions-258758954
+SM_ACT_SNAPSHOT_ID=20-09-22:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:5614081:dev:0459-07:github.com/cadorn:github-actions-266311395
+SM_ACT_SNAPSHOT_ID7=260868e
+SM_ACT_SNAPSHOT_HID=20-09-22:78ae465:e9a0cb3:42099b4:b08ae37:5614081:34c6fce:0459-07:57e542e:3dcff91
+SM_ACT_SNAPSHOT_FSID=20-09-22/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/5614081/dev/0459-07/github.com~cadorn/github-actions-266311395
 SM_ACT_SNAPSHOT_ASPECT=Snapshot
 SM_ACT_SNAPSHOT_ASPECT_OF=3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/
 ```
@@ -69,39 +69,39 @@ Reports are written to a `_/gi0.Sourcemint.org-sm.act/snapshots` branch and stor
 {
      "aspect": "Snapshot",
      "aspectOf": "3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/",
-     "id": "20-09-17:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:6a42268:dev:0518-38:github.com/cadorn:github-actions-258758954",
-     "id7": "b986814",
-     "hid": "20-09-17:78ae465:e9a0cb3:42099b4:b08ae37:6a42268:34c6fce:0518-38:57e542e:103a6c0",
-     "fsid": "20-09-17/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/6a42268/dev/0518-38/github.com~cadorn/github-actions-258758954",
+     "id": "20-09-22:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:5614081:dev:0459-07:github.com/cadorn:github-actions-266311395",
+     "id7": "260868e",
+     "hid": "20-09-22:78ae465:e9a0cb3:42099b4:b08ae37:5614081:34c6fce:0459-07:57e542e:3dcff91",
+     "fsid": "20-09-22/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/5614081/dev/0459-07/github.com~cadorn/github-actions-266311395",
      "logs": {
-          "url": "https://api.github.com/repos/sourcemint/sm.act.github.actions/actions/runs/258758954/logs"
+          "url": "https://api.github.com/repos/sourcemint/sm.act.github.actions/actions/runs/266311395/logs"
      },
      "artifacts": {
-          "url": "https://api.github.com/repos/sourcemint/sm.act.github.actions/actions/runs/258758954/artifacts"
+          "url": "https://api.github.com/repos/sourcemint/sm.act.github.actions/actions/runs/266311395/artifacts"
      },
      "meta": {
           "REPO_GUID": "3-02453f6-7-136",
           "REPO_URI": "github.com/sourcemint/sm.act.github.actions",
           "GIT_REMOTE": "git@github.com:sourcemint/sm.act.github.actions.git",
           "GIT_REF": "refs/heads/dev",
-          "GIT_SHA": "6a422689edf9d3e087fc3f072ccb57ed8a88e012",
-          "GIT_SHA7": "6a42268",
-          "GIT_SHA3": "6a4",
-          "RUN_ID": "github-actions-258758954",
+          "GIT_SHA": "5614081db2c453331505879e0793bb45b8919072",
+          "GIT_SHA7": "5614081",
+          "GIT_SHA3": "561",
+          "RUN_ID": "github-actions-266311395",
           "NAME": "Snapshot",
           "ACTOR_URI": "github.com/cadorn",
           "TRIGGER_EVENT": "push",
           "COMPONENT_ID": "/",
           "GIT_BRANCH": "dev",
           "GIT_COMMIT_AUTHOR": "Christoph Dorn <christoph@christophdorn.com>",
-          "GIT_COMMIT_DATE": "Wed Sep 16 22:18:06 2020 -0700",
-          "GIT_COMMIT_MESSAGE": "fix",
+          "GIT_COMMIT_DATE": "Mon Sep 21 21:58:22 2020 -0700",
+          "GIT_COMMIT_MESSAGE": "wip",
           "ID": "3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot",
           "FSID": "3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot",
-          "SNAPSHOT_ID": "20-09-17:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:6a42268:dev:0518-38:github.com/cadorn:github-actions-258758954",
-          "SNAPSHOT_ID7": "b986814",
-          "SNAPSHOT_HID": "20-09-17:78ae465:e9a0cb3:42099b4:b08ae37:6a42268:34c6fce:0518-38:57e542e:103a6c0",
-          "SNAPSHOT_FSID": "20-09-17/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/6a42268/dev/0518-38/github.com~cadorn/github-actions-258758954",
+          "SNAPSHOT_ID": "20-09-22:3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/:Snapshot:5614081:dev:0459-07:github.com/cadorn:github-actions-266311395",
+          "SNAPSHOT_ID7": "260868e",
+          "SNAPSHOT_HID": "20-09-22:78ae465:e9a0cb3:42099b4:b08ae37:5614081:34c6fce:0459-07:57e542e:3dcff91",
+          "SNAPSHOT_FSID": "20-09-22/3-02453f6-7-136/github.com~sourcemint~sm.act.github.actions/~/Snapshot/5614081/dev/0459-07/github.com~cadorn/github-actions-266311395",
           "SNAPSHOT_ASPECT": "Snapshot",
           "SNAPSHOT_ASPECT_OF": "3-02453f6-7-136:github.com/sourcemint/sm.act.github.actions:/"
      },
@@ -147,6 +147,16 @@ Run tests:
 
   npm install
   npm test
+
+
+Development
+===========
+
+  1. `git checkout -b dev`
+  2. Make changes & push to github
+  3. Wait for github actions to complete running
+  4. `./bin/activate --local`
+
 
 License
 =======
