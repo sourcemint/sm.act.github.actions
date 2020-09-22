@@ -2,7 +2,7 @@
 console.error('BOOT 1');
 
 const PATH = require('path');
-const FS = require('fs').promises;
+const FS = require('fs');
 const LIB = require("../_/lib");
 
 console.error('BOOT 2');
@@ -29,7 +29,7 @@ console.error('BOOT 3');
 
         const activeDirPrefix = LIB.makeActingDirectoryPrefix('snapshots-active');
         const activePath = PATH.join(baseDir, activeDirPrefix, compId.replace(/\//g, '~'), actName, streamName, 'snapshotId');
-        const snapshotId = await FS.readFile(activePath, 'utf8');
+        const snapshotId = await FS.readFileSync(activePath, 'utf8');
 
         return snapshotId;
     }
@@ -44,7 +44,7 @@ console.error('BOOT 3');
         const snapshotFsId = snapshotId.replace(/\//g, '~').replace(/:/g, '\/');
         const snapshotDirPrefix = LIB.makeActingDirectoryPrefix('snapshots');
         const reportPath = PATH.join(baseDir, snapshotDirPrefix, `${snapshotFsId}.json`);
-        const snapshot = await FS.readFile(reportPath, 'utf8');
+        const snapshot = await FS.readFileSync(reportPath, 'utf8');
         return JSON.parse(snapshot);
     }
 
@@ -56,7 +56,7 @@ console.error('BOOT 3');
     // delete snapshot.env;
 
     // console.log(`[sm.act] Activating snapshot:`, snapshot);
-    if (!(await FS.access(PATH.join(__dirname, '../../../node_modules')))) {
+    if (!(await FS.existsSync(PATH.join(__dirname, '../../../node_modules')))) {
 
 console.error('install deps');        
         require("child_process").execSync('npm install', {
