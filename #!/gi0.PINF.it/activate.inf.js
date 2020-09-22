@@ -15,6 +15,10 @@ exports['gi0.PINF.it/build/v0'] = async function (LIB, CLASSES) {
 
             const activeDirPrefix = ACT_LIB.makeActingDirectoryPrefix('snapshots-active');
 
+            if (!(await LIB.FS.exists(LIB.PATH.join(baseDir, activeDirPrefix)))) {
+                return [];
+            }
+
             const filenames = await LIB.GLOB.async('**/snapshotId', {
                 cwd: LIB.PATH.join(baseDir, activeDirPrefix)
             });
@@ -63,11 +67,14 @@ exports['gi0.PINF.it/build/v0'] = async function (LIB, CLASSES) {
                 if (LIB.CODEBLOCK.isCodeblock(code)) {
 
                     let runHandler = await LIB.CODEBLOCK.thawFromJSON(code).runAsync({
+                        process: process,
                         require: function (uri) {
                             return require(LIB.RESOLVE.sync(uri, {
                                 basedir: build.path
                             }));
                         }
+                    }, {
+                        sandbox: {}
                     });
 
                     LIB.console.info(`Running activation code >>>`);

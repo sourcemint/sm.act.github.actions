@@ -45,6 +45,8 @@ LIB.main(async function () {
 
         // console.log("revisions:", revisions);
 
+        // TODO: Load snapshot details so we can get at more metadata when showing revisions.
+
         return revisions;
     }
 

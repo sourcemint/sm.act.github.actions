@@ -8,11 +8,43 @@
     ":activate:": "/.~/gi0.Sourcemint.org~sm.act/snapshots-activate @ activate/v1",
 
     "gi0.PINF.it/build/v0 @ # :activate: build() /.~/gi0.Sourcemint.org~sm.act/snapshots-activate": {
-        "onActivate": (javascript (require) >>>
+        "onActivate": (javascript (process, require) >>>
 
             const FS = require("fs").promises;
+            const PATH = require("path");
+
+            const matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+            function escapeRE (str) {
+                return str.replace(matchOperatorsRe, '\\$&');
+            }
+
+            // This logic is local to sm.act.github.actions
 
             return async function (snapshot) {
+
+                // Update workflow files with git ref of sm.act.github.actions to lock
+                // github actions code to specific commit for exact repeated use in future.
+                // This assumes the ref has been pushed to github before activating
+                // or the action code will not be available when running the action on github.
+
+                const workflowBasedir = '../../.github/workflows';
+                const workflowFilenames = await FS.readdir(workflowBasedir);
+
+                const commitRef = snapshot.meta.GIT_SHA7;
+
+                await Promise.all(workflowFilenames.map(async function (filename) {
+                    const path = PATH.join(process.cwd(), workflowBasedir, filename);
+
+                    let content = await FS.readFile(path, 'utf8');
+                    
+                    const re = /(:\s*sourcemint\/sm\.act\.github\.actions\/\.github\/actions\/[^\/@]+@)([^@\s]+)(\s*)\n$/mg;
+                    let m = null;
+                    while ( (m = re.exec(content)) ) {
+                        content = content.replace(new RegExp(escapeRE(m[0]), 'g'), `${m[1]}${commitRef}${m[3]}`);
+                    }
+
+                    await FS.outputFile(path, content, 'utf8');
+                }));
 
                 // Update README with snapshot details.
 
