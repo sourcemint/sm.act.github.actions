@@ -12,10 +12,10 @@ jobs:
           fetch-depth: 0
 
       - name: "[sm.act] Set env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@bcf6f97
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@3c85349
 
       - name: "[sm.act] Show env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@bcf6f97
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@3c85349
 
       - shell: bash
         run: |
@@ -33,10 +33,10 @@ jobs:
           fetch-depth: 0
 
       - name: "[sm.act] Set env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@bcf6f97
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@3c85349
 
       - name: "[sm.act] Show env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@bcf6f97
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@3c85349
 
       - shell: bash
         run: |
