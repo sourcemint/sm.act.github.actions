@@ -1,9 +1,15 @@
 
+console.error('BOOT 1');
+
 const PATH = require('path');
 const FS = require('fs').promises;
 const LIB = require("../_/lib");
 
+console.error('BOOT 2');
+
 LIB.main(async function () {
+
+console.error('BOOT 3');
     
     async function getSnapshotIdForTag(tagName) {
 
@@ -53,7 +59,7 @@ LIB.main(async function () {
     if (!(await FS.access(PATH.join(__dirname, '../../../node_modules')))) {
 
 console.error('install deps');        
-        await require("child_process").execSync('npm install', {
+        require("child_process").execSync('npm install', {
             cwd: PATH.join(__dirname, '../../..'),
             stdio: [ null, 'inherit', 'inherit']
         });
