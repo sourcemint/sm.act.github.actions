@@ -51,6 +51,17 @@ LIB.main(async function () {
 
     // console.log(`[sm.act] Activating snapshot:`, snapshot);
 
+    if (!(await FS.exists(PATH.join(__dirname, '../../../node_modules')))) {
+
+console.error('install deps');        
+        await require("child_process").execSync('npm install', {
+            cwd: PATH.join(__dirname, '../../..'),
+            stdio: [ null, 'inherit', 'inherit']
+        });
+    }
+
+console.error('run pinf.it');        
+
     process.env.SM_ACT_SNAPSHOT_ID = snapshotId;
     LIB.runCommand(`pinf.it './#!/gi0.Sourcemint.org/#!sm.act.activate.inf.json'`);
 
