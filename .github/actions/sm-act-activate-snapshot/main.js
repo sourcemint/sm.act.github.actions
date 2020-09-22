@@ -50,8 +50,7 @@ LIB.main(async function () {
     // delete snapshot.env;
 
     // console.log(`[sm.act] Activating snapshot:`, snapshot);
-
-    if (!(await FS.exists(PATH.join(__dirname, '../../../node_modules')))) {
+    if (!(await FS.access(PATH.join(__dirname, '../../../node_modules'), FS.constants.F_OK))) {
 
 console.error('install deps');        
         await require("child_process").execSync('npm install', {
