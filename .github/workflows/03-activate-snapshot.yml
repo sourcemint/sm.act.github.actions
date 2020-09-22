@@ -12,10 +12,10 @@ jobs:
           fetch-depth: 0
 
       - name: "[sm.act] Set env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@626c5e9
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-set-env@335f537
 
       - name: "[sm.act] Show env"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@626c5e9
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-show-env@335f537
 
       - name: "[sm.act] Activate snapshot"
-        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-activate-snapshot@626c5e9
+        uses: sourcemint/sm.act.github.actions/.github/actions/sm-act-activate-snapshot@335f537

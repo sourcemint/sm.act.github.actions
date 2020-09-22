@@ -6,10 +6,16 @@ const CHILD_PROCESS = require('child_process');
 
 
 exports.main = function (program, module) {
+
+console.error('MAIN 1');
+
     if (
         !module ||
         require.main === module.id
     ) {
+
+console.error('MAIN 2');
+
         try {
             program().then(function () {
                 process.exit(0);
