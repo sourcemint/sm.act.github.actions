@@ -7,11 +7,11 @@ const CHILD_PROCESS = require('child_process');
 
 exports.main = function (program, module) {
 
-console.error('MAIN 1:', require.main, module && module.id);
+console.error('MAIN 1:', require.main.id, module && module.id);
 
     if (
         !module ||
-        require.main === module.id
+        require.main.id === module.id
     ) {
 
 console.error('MAIN 2');
