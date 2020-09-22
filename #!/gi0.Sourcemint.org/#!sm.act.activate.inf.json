@@ -37,13 +37,13 @@
 
                     let content = await FS.readFile(path, 'utf8');
                     
-                    const re = /(:\s*sourcemint\/sm\.act\.github\.actions\/\.github\/actions\/[^\/@]+@)([^@\s]+)(\s*)\n$/mg;
+                    const re = /(:\s*sourcemint\/sm\.act\.github\.actions\/\.github\/actions\/[^\/@]+@)([^@\s]+)(\s*)$/mg;
                     let m = null;
                     while ( (m = re.exec(content)) ) {
                         content = content.replace(new RegExp(escapeRE(m[0]), 'g'), `${m[1]}${commitRef}${m[3]}`);
                     }
 
-                    await FS.outputFile(path, content, 'utf8');
+                    await FS.writeFile(path, content, 'utf8');
                 }));
 
                 // Update README with snapshot details.
