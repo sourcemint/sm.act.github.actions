@@ -54,11 +54,11 @@ jobs:
       - Env2
     steps:
       - name: Download env1 result
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4.1.7
         with:
           name: env1
       - name: Download env2 result
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4.1.7
         with:
           name: env2
 
